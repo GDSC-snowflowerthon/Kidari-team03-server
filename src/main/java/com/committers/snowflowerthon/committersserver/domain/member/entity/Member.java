@@ -24,14 +24,14 @@ public class Member {
     @Column(nullable = false)
     private Long snowflake; // 눈송이 수
 
-    @Column(nullable = false, columnDefinition = "integer default -1")
-    private Long snowmanHeight; // 눈사람 키; 초기 키: 1
+    @Column(nullable = false)
+    private Long snowmanHeight = 1L; // 눈사람 키; 초기 키: 1
     
     @Column(nullable = false)
-    private Long attacking; // 공격한 횟수
+    private Long attacking = 0L; // 공격한 횟수
 
     @Column(nullable = false)
-    private Long damage; // 공격 받은 횟수
+    private Long damage = 0L; // 공격 받은 횟수
     
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
