@@ -17,7 +17,7 @@ public class MemberController {
     private final MemberService memberService;
 
     /*public ResponseEntity<MemberOwnResDto> getMyInfo() {
-        MemberOwnResDto myInfo = memberService.getMemberById();
+        MemberOwnResDto ownMember = MemberOwnResDto.toDto(member);
         if (myInfo = null) {
             return ResponseEntity.notFound().build();
         }
@@ -30,11 +30,7 @@ public class MemberController {
         if (member == null) {
             return ResponseEntity.notFound().build();
         }
-        MemberSearchResDto searchedMember = MemberSearchResDto.builder()
-                .nickname(member.getNickname())
-                .snowmanHeight(member.getSnowmanHeight())
-                .isFollowed(false) // 추후 친구여부 찾는 메소드 만들어야
-                .build();
+        MemberSearchResDto searchedMember = MemberSearchResDto.toDto(member);
         return ResponseEntity.ok(searchedMember);
     }
 
@@ -44,14 +40,7 @@ public class MemberController {
         if (member == null) {
             return ResponseEntity.notFound().build();
         }
-        MemberOtherResDto otherMember = MemberOtherResDto.builder()
-                .nickname(member.getNickname())
-                .snowmanHeight(member.getSnowmanHeight())
-                .snowId(member.getItem().getSnowId())
-                .hatId(member.getItem().getHatId())
-                .decoId(member.getItem().getDecoId())
-                .isFollowed(false) // 추후 친구여부 찾는 메소드 만들어야
-                .build();
+        MemberOtherResDto otherMember = MemberOtherResDto.toDto(member);
         return ResponseEntity.ok(otherMember);
     }
 
