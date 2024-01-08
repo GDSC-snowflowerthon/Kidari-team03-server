@@ -49,4 +49,11 @@ public class Member {
 
     @Column
     private boolean newAlarm; // 새로운 알림이 있는지
+
+    public void initializeSnowmanHeight(){
+        this.snowmanHeight = 1L;
+    }
+    public void growSnowmanHeight(){
+        this.snowmanHeight++;
+    }
 }

@@ -16,13 +16,15 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    /*public ResponseEntity<MemberOwnResDto> getMyInfo() {
-        MemberOwnResDto ownMember = MemberOwnResDto.toDto(member);
-        if (myInfo = null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(myInfo);
-    }*/
+    /*
+    // 내 정보 받아오는 부분 필요
+     */
+    
+    @PatchMapping("/home/growth")
+    public void growSnowman()
+        Member member = memberService.getMemberById(id);
+        memberService.growSnowman(id);
+    }
 
     @GetMapping("/buddy/search") // 유저 검색
     public ResponseEntity<MemberSearchResDto> searchMember(@RequestParam String nickname) {
