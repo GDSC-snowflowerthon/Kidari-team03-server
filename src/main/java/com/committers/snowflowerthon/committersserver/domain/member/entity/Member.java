@@ -22,19 +22,20 @@ public class Member {
     private String nickname; // 깃허브 아이디
     
     @Column(nullable = false)
-    private Long snowflake; // 눈송이 수
+    private Long snowflake = 0L; // 눈송이 수
 
     @Column(nullable = false)
-    private Long snowmanHeight; // 눈사람 키
+    private Long snowmanHeight = 1L; // 눈사람 키
     
     @Column(nullable = false)
-    private Long attacking; // 공격한 횟수
+    private Long attacking = 0L; // 공격한 횟수
 
     @Column(nullable = false)
-    private Long damage; // 공격 받은 횟수
+    private Long damage = 0L; // 공격 받은 횟수
     
     @Column(nullable = false)
-    private Role role; // 유저 권한
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.getDefaultRole(); // 유저 권한
 
     // 단방향 매핑
     @OneToOne(mappedBy = "Univ", fetch = FetchType.LAZY)
@@ -45,4 +46,8 @@ public class Member {
     @OneToOne(mappedBy = "Item", fetch = FetchType.LAZY)
     @JoinColumn(name = "itemId")
     private Item item; // 아이템 고유 번호
+
+    public void updateSnowflake(Long totalCommits) {
+        this.snowflake = totalCommits;
+    }
 }

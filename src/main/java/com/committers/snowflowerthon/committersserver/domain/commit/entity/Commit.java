@@ -25,8 +25,8 @@ public class Commit {
     @JoinColumn(name = "memberId")
     private Member member;
 
-    public void updateCount(Long count) {
-        this.count = count;
+    public void updateCount(Long totalCommits) {
+        this.count = totalCommits;
     }
 }
 

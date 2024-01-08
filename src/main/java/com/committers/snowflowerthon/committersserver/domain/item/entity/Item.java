@@ -17,11 +17,11 @@ public class Item {
     private Long id; // 아이템 고유 번호
     
     @Column(nullable = false)
-    private Long snowId; // 눈송이
+    private Long snowId = 0L; // 눈송이
     
     @Column(nullable = false)
-    private Long hatId; // 모자
+    private Long hatId = 0L; // 모자
     
     @Column(nullable = false)
-    private Long decoId; // 장식
+    private Long decoId = 0L; // 장식
 }
