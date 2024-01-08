@@ -1,9 +1,9 @@
-package com.committers.snowflowerthon.domain.member.entity;
+package com.committers.snowflowerthon.committersserver.domain.member.entity;
 
-import com.committers.snowflowerthon.domain.univ.entity.Univ;
+import com.committers.snowflowerthon.committersserver.domain.univ.entity.Univ;
 import jakarta.persistence.*;
 import lombok.*;
-import com.committers.snowflowerthon.domain.item.entity.Item;
+import com.committers.snowflowerthon.committersserver.domain.item.entity.Item;
 
 @Getter
 @Builder
