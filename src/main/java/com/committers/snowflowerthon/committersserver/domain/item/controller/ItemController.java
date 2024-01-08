@@ -21,6 +21,7 @@ public class ItemController {
     @GetMapping("/") //꾸미기 화면에서 사용하는 api
     public ResponseEntity<ItemDto> getItem(){
         Long itemId = member.getItem().getId();
+        ItemDto itemDto = itemService.getItemDto(itemId);
         return ResponseEntity.ok(itemDto);
     }
 
