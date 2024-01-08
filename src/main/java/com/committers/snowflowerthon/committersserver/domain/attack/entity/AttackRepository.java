@@ -1,4 +1,4 @@
-package com.committers.snowflowerthon.domain.attack.entity;
+package com.committers.snowflowerthon.committersserver.domain.attack.entity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
