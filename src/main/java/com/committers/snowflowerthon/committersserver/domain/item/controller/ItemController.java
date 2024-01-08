@@ -17,34 +17,21 @@ public class ItemController {
 
     private final ItemService itemService;
     private final Member member; //임시
-    @GetMapping("/")
+
+    @GetMapping("/") //꾸미기 화면에서 사용하는 api
     public ResponseEntity<ItemDto> getItem(){
-        Item item = member.getItem();
-        if (item == null) {
-            return ResponseEntity.notFound().build();
-        }
-        ItemDto itemDto = new ItemDto(item.getSnowId(), item.getHatId(), item.getDecoId());
+        Long itemId = member.getItem().getId();
         return ResponseEntity.ok(itemDto);
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<ItemDto> patchItem(@RequestBody Item selectedItem) {
-        if (selectedItem == null) {
+    public ResponseEntity<ItemDto> updateItem(@RequestBody ItemDto reqItemDto) {
+        if (reqItemDto == null) {
             return ResponseEntity.badRequest().build();
         }
-        Item existingItem = itemService.getItemById(selectedItem.getId());
-        if (existingItem == null) {
-            return ResponseEntity.notFound().build();
-        }
-        Item updatedItem = itemService.updateItem(member.getItem(), selectedItem);
-        ItemDto itemDto = ItemDto.builder()
-                .snowId(updatedItem.getSnowId())
-                .hatId(updatedItem.getHatId())
-                .decoId(updatedItem.getDecoId())
-                .build();
-        if (updatedItem == null) {
-            return ResponseEntity.notFound().build();
-        }
+        Long itemId = member.getItem().getId();
+        itemService.updateItem(itemId, reqItemDto);
+        ItemDto itemDto = itemService.getItemDto(itemId);
         return ResponseEntity.ok(itemDto);
     }
 }
