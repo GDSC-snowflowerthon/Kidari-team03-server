@@ -1,15 +1,13 @@
 package com.committers.snowflowerthon.committersserver.domain.member.controller;
 
+import com.committers.snowflowerthon.committersserver.domain.member.dto.MemberOtherResDto;
+import com.committers.snowflowerthon.committersserver.domain.member.dto.MemberOwnResDto;
+import com.committers.snowflowerthon.committersserver.domain.member.dto.MemberSearchResDto;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
 import com.committers.snowflowerthon.committersserver.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,16 +16,43 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/home/info/own")
-    public ResponseEntity<?> getCurrentMember() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        // 여기서 username을 사용하여 현재 사용자의 Member 정보를 조회하거나 다른 로직을 수행할 수 있습니다.
-        Member member = memberService.getMemberByNickname(username); // 예시: 닉네임으로 조회하는 메서드
-        if (member != null) {
-            return ResponseEntity.ok(member);
-        } else {
+    /*public ResponseEntity<MemberOwnResDto> getMyInfo() {
+        MemberOwnResDto myInfo = memberService.getMemberById();
+        if (myInfo = null) {
             return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(myInfo);
+    }*/
+
+    @GetMapping("/buddy/search") // 유저 검색
+    public ResponseEntity<MemberSearchResDto> searchMember(@RequestParam String nickname) {
+        Member member = memberService.getMemberByNickname(nickname);
+        if (member == null) {
+            return ResponseEntity.notFound().build();
+        }
+        MemberSearchResDto searchedMember = MemberSearchResDto.builder()
+                .nickname(member.getNickname())
+                .snowmanHeight(member.getSnowmanHeight())
+                .isFollowed(false) // 추후 친구여부 찾는 메소드 만들어야
+                .build();
+        return ResponseEntity.ok(searchedMember);
     }
+
+    @GetMapping("/user") // 유저 정보 페이지 조회
+    public ResponseEntity<MemberOtherResDto> getMemberInfo(@RequestParam String nickname) {
+        Member member = memberService.getMemberByNickname(nickname);
+        if (member == null) {
+            return ResponseEntity.notFound().build();
+        }
+        MemberOtherResDto otherMember = MemberOtherResDto.builder()
+                .nickname(member.getNickname())
+                .snowmanHeight(member.getSnowmanHeight())
+                .snowId(member.getItem().getSnowId())
+                .hatId(member.getItem().getHatId())
+                .decoId(member.getItem().getDecoId())
+                .isFollowed(false) // 추후 친구여부 찾는 메소드 만들어야
+                .build();
+        return ResponseEntity.ok(otherMember);
+    }
+
 }

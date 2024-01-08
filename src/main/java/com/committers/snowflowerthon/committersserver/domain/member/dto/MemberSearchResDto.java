@@ -5,11 +5,8 @@ import lombok.Builder;
 
 @Builder
 @AllArgsConstructor
-public class MemberOtherResDto { // 유저 정보 페이지 조회
+public class MemberSearchResDto { // 유저 검색 결과에서 사용됨
     private String nickname;
     private Long snowmanHeight;
-    private Long snowId;
-    private Long hatId;
-    private Long decoId;
     private boolean isFollowed;
 }
