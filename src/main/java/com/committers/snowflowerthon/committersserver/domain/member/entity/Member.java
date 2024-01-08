@@ -1,9 +1,9 @@
-package com.committers.snowflowerthon.domain.member.entity;
+package com.committers.snowflowerthon.committersserver.domain.member.entity;
 
-import com.committers.snowflowerthon.domain.univ.entity.Univ;
+import com.committers.snowflowerthon.committersserver.domain.univ.entity.Univ;
 import jakarta.persistence.*;
 import lombok.*;
-import com.committers.snowflowerthon.domain.item.entity.Item;
+import com.committers.snowflowerthon.committersserver.domain.item.entity.Item;
 
 @Getter
 @Builder
@@ -24,8 +24,8 @@ public class Member {
     @Column(nullable = false)
     private Long snowflake; // 눈송이 수
 
-    @Column(nullable = false)
-    private Long snowmanHeight; // 눈사람 키
+    @Column(nullable = false, columnDefinition = "integer default -1")
+    private Long snowmanHeight; // 눈사람 키; 초기 키: 1
     
     @Column(nullable = false)
     private Long attacking; // 공격한 횟수
@@ -34,6 +34,7 @@ public class Member {
     private Long damage; // 공격 받은 횟수
     
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role; // 유저 권한
 
     // 단방향 매핑
@@ -45,4 +46,7 @@ public class Member {
     @OneToOne(mappedBy = "Item", fetch = FetchType.LAZY)
     @JoinColumn(name = "itemId")
     private Item item; // 아이템 고유 번호
+
+    @Column
+    private boolean newAlarm; // 새로운 알림이 있는지
 }
