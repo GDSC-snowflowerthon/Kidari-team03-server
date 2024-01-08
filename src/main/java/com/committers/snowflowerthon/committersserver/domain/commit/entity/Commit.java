@@ -1,6 +1,6 @@
-package com.committers.snowflowerthon.domain.commit.entity;
+package com.committers.snowflowerthon.committersserver.domain.commit.entity;
 
-import com.committers.snowflowerthon.domain.member.entity.Member;
+import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 

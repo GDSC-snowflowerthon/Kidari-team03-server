@@ -1,4 +1,4 @@
-package com.committers.snowflowerthon.domain.member.entity;
+package com.committers.snowflowerthon.committersserver.domain.member.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
