@@ -22,9 +22,13 @@ public enum SuccessCode {
 
     // Member
     SIGN_UP_SUCCESS(200, "회원 가입에 성공했습니다."),
-    DELETE_MEMBER_SUCCESS(200, "회원 탈퇴가 완료 되었습니다.");
+    DELETE_MEMBER_SUCCESS(200, "회원 탈퇴가 완료 되었습니다."),
 
     // GitHub
+
+    // Redis
+    SET_REDIS_KEY_SUCCESS(201, "레디스 키 등록에 성공했습니다."),
+    GET_REDIS_KEY_SUCCESS(200, "레디스 키 조회에 성공했습니다.");
 
     private final int statusCode;
     private final String message;

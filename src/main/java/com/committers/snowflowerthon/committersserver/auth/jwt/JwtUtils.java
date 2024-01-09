@@ -1,6 +1,5 @@
 package com.committers.snowflowerthon.committersserver.auth.jwt;
 
-import com.committers.snowflowerthon.committersserver.auth.config.OAuth2MemberDto;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,18 +10,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.security.SignatureException;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
 @Component
 public class JwtUtils {
-    @Value("${jwt.access-token-time}")
-    private long accessTokenTime = 1800L; // 30분;
-    @Value("${jwt.refresh-token-time}")
-    private long refreshTokenTime = 14 * 24 * 60 * 60L; // 14일;
-    @Value("${jwt.secret}")
+
+    @Value("${secret.time.access}")
+    private long accessTokenTime; // 30분;
+    @Value("${secret.time.refresh}")
+    private long refreshTokenTime; // 14일;
+    @Value("${secret.key}")
     private String jwtSecretKey;
     private final StringRedisTemplate stringRedisTemplate;
 

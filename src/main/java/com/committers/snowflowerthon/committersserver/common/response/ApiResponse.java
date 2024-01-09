@@ -24,6 +24,22 @@ public class ApiResponse<T> {
         );
     }
 
+    public static <T> ApiResponse<T> success(SuccessCode successCode) {
+        return new ApiResponse<>(
+                successCode.getStatusCode(),
+                successCode.getMessage(),
+                null
+        );
+    }
+
+    public static <T> ApiResponse<T> success(SuccessCode successCode, T data) {
+        return new ApiResponse<>(
+                successCode.getStatusCode(),
+                successCode.getMessage(),
+                data
+        );
+    }
+
     public static <T> ApiResponse<T> success(T data) {
         return new ApiResponse<>(
                 SuccessCode.SUCCESS.getStatusCode(),

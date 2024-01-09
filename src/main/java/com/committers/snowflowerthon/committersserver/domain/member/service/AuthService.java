@@ -40,6 +40,12 @@ public class AuthService {
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
 
+        log.info("AuthService의 login");
+        log.info("accessToken" + accessToken);
+        log.info("refreshToken" + refreshToken);
+        log.info("accessCookie" + accessCookie);
+        log.info("refreshCookie" + refreshCookie);
+
         return response;
     }
 
