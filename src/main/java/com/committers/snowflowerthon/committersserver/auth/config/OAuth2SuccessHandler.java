@@ -14,6 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -30,20 +31,24 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Component
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private MemberRepository memberRepository;
-    private AuthService authService;
-    private GitHubService gitHubService;
+    private final MemberRepository memberRepository;
+    private final AuthService authService;
+    private final GitHubService gitHubService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 
+        log.info("OAuth2SuccessHandler");
+        log.info("oAuth2User -> {}", oAuth2User);
+
         OAuth2MemberDto memberDto = OAuth2MemberDto.builder()
 //                .gitHubId((Long) oAuth2User.getAttributes().get("id"))
-                .nickname((String) oAuth2User.getAttributes().get("login"))
+                .nickname((String) oAuth2User.getAttributes().get("nickname"))
                 .build();
 
+        log.info("OAuth2SuccessHandler에서 memberDto -> {}" + memberDto.getNickname());
         log.info("Principal에서 꺼낸 OAuth2User = {}", oAuth2User);
 
         // 최초 로그인 판별
@@ -64,7 +69,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         }
 
         // Auth 컨트롤러로 리다이렉트
-        String redirectUrl = UriComponentsBuilder.fromUriString("/api/home")
+        String redirectUrl = UriComponentsBuilder.fromUriString("/api/auth/redirect")
                 .queryParam("accessToken", token.getAccessToken())
                 .queryParam("refreshToken", token.getRefreshToken())
                 .toUriString();
