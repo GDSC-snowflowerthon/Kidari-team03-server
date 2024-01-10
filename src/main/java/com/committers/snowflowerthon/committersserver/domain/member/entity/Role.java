@@ -7,9 +7,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Role { // 유저 권한(게스트/멤버)
 
-    GUEST("ROLE_GUEST", "게스트"),
-    MEMBER("ROLE_MEMBER", "일반 사용자");
+    ROLE_GUEST("ROLE_GUEST", "게스트"),
+    ROLE_MEMBER("ROLE_MEMBER", "일반 사용자");
 
     private final String role;
     private final String title;
+
+    public static Role getDefaultRole() {
+        return ROLE_GUEST; // 기본값은 ROLE_GUEST로 설정
+    }
 }
