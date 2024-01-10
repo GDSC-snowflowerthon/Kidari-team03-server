@@ -3,6 +3,7 @@ package com.committers.snowflowerthon.committersserver.domain.follow.service;
 import com.committers.snowflowerthon.committersserver.auth.config.AuthenticationUtils;
 import com.committers.snowflowerthon.committersserver.common.response.exception.ErrorCode;
 import com.committers.snowflowerthon.committersserver.common.response.exception.FollowException;
+import com.committers.snowflowerthon.committersserver.common.response.exception.ItemException;
 import com.committers.snowflowerthon.committersserver.common.validation.ValidationService;
 import com.committers.snowflowerthon.committersserver.domain.follow.dto.FollowPatchedDto;
 import com.committers.snowflowerthon.committersserver.domain.follow.entity.Follow;
@@ -33,8 +34,8 @@ public class FollowService {
     public Follow getFollow(Member buddy){ // 반환값이 NULL일 수 있음
         Long memberId = AuthenticationUtils.getMemberId();
         Member member = validationService.valMember(memberId);
-        Optional<Follow> optionalFollow = followRepository.findByMemberAndBuddyId(member, buddy.getId());
-        return optionalFollow.get();
+        return followRepository.findByMemberAndBuddyId(member, buddy.getId())
+                .orElse(null);
     }
 
     public boolean followStatus(Member buddy) {

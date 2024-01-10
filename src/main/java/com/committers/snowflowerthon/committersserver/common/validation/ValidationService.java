@@ -1,9 +1,6 @@
 package com.committers.snowflowerthon.committersserver.common.validation;
 
-import com.committers.snowflowerthon.committersserver.common.response.exception.ErrorCode;
-import com.committers.snowflowerthon.committersserver.common.response.exception.FollowException;
-import com.committers.snowflowerthon.committersserver.common.response.exception.MemberException;
-import com.committers.snowflowerthon.committersserver.common.response.exception.UnivException;
+import com.committers.snowflowerthon.committersserver.common.response.exception.*;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.MemberRepository;
 import com.committers.snowflowerthon.committersserver.domain.univ.entity.Univ;

@@ -29,11 +29,15 @@ public enum ErrorCode {
     // Commit
     COMMIT_NOT_FOUND(404, "커밋 기록이 존재하지 않습니다."),
 
+    // Follow
+    FOLLOW_BAD_REQUEST(404, "팔로우가 존재하지 않습니다"),
+
+    // Item
+    ITEM_NOT_FOUND(404, "아이템이 존재하지 않습니다."),
+
     // Univ
     UNIV_NOT_FOUND(404, "존재하지 않는 대학입니다."),
 
-    // Follow
-    FOLLOW_BAD_REQUEST(400, "isFollowed 쿼리 변수 값이 정확한지 확인이 필요합니다.")
     ;
 
     private final int statusCode;

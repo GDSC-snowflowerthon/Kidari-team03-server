@@ -32,9 +32,14 @@ public class MemberService {
     private final FollowService followService;
     private final GitHubService gitHubService;
 
-    public boolean growSnowman() {
+    public Member getAuthMember() {
         Long memberId = authenticationUtils.getMemberId();
         Member member = validationService.valMember(memberId);
+        return member;
+    }
+
+    public boolean growSnowman() {
+        Member member = getAuthMember();
         if (!member.useSnowflake()){ // 눈송이를 사용하는 데 실패
             return false;
         }
@@ -57,9 +62,7 @@ public class MemberService {
 
     // 단일 유저 본인 정보 조회
     public MemberInfoDto getMemberInfo() {
-
-        Long memberId = authenticationUtils.getMemberId();
-        Member member = validationService.valMember(memberId);
+        Member member = getAuthMember();
 
         MemberInfoDto newMemberInfo = MemberInfoDto.builder()
                 .nickname(member.getNickname())
@@ -70,7 +73,6 @@ public class MemberService {
                 .decoId(member.getItem().getDecoId())
                 .newAlarm(member.getNewAlarm())
                 .build();
-
         return newMemberInfo;
     }
 
