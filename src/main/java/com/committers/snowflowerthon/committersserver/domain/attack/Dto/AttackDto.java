@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class AttackDto {
-    private String time; // 날짜 포맷 위해 Date 아닌 String 으로 전달
+    private String time;
     private String attacker;
     private Boolean isChecked;
 }

@@ -8,6 +8,7 @@ import com.committers.snowflowerthon.committersserver.domain.member.service.Memb
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.xml.stream.Location;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -29,26 +30,38 @@ public class AttackService {
             AttackDto attackDto = formatAttackDto(atk);
             attackDtoList.add(attackDto);
             if (!atk.getIsChecked()) {
-                atk.checkAttack(); //isChecked 를 true 로 설정
+                atk.checkAttack(); //atk의 isChecked 를 true 로 설정
             }
         }
         return attackDtoList;
     }
 
-    public static AttackDto formatAttackDto(Attack attack){ //time 형식 지정
+    public AttackDto formatAttackDto(Attack attack){ //time 형식 지정
         LocalDateTime attackedTime = attack.getTime();
         String timeString = attackedTime.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
+        String attackerName = getAttackerName(attack);
         return AttackDto.builder()
                 .time(timeString)
-                .attacker(attack.getAttacker())
+                .attacker(attackerName)
                 .isChecked(attack.getIsChecked())
                 .build();
     }
 
-    public void makeAttack(String attackerName, String attackedName){
-        Member attackerName = memberService.getMemberByNickname(attackedName);
-        Member attackedName = memberService.getMemberByNickname(attackedName);
-        attackedName.
-        //공격받은 사람의 newAlarm 을 true 로 만듬
+    public void makeAttack(Long attackerId, String attackedName){
+        LocalDateTime now = LocalDateTime.now(); // 현재 시각
+        Member attackedMember = memberService.getMemberByNickname(attackedName);
+        attackedMember.alarmUnchecked(); // 공격받은 사람의 newAlarm 을 true 로 만듬
+        Attack newAttack = Attack.builder()
+                .time(now)
+                .attackerId(attackerId)
+                .isChecked(false)
+                .member(attackedMember)
+                .build();
+        attackRepository.save(newAttack);
+    }
+
+    public String getAttackerName(Attack attack){
+        Member attacker = memberService.getMemberById(attack.getAttackerId());
+        return attacker.getNickname();
     }
 }
