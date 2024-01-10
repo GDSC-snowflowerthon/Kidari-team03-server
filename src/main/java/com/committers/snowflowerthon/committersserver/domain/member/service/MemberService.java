@@ -6,7 +6,6 @@ import com.committers.snowflowerthon.committersserver.domain.member.dto.MemberSe
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

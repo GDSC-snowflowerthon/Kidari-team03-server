@@ -1,10 +1,7 @@
 package com.committers.snowflowerthon.committersserver.domain.member.controller;
 
-import com.committers.snowflowerthon.committersserver.domain.follow.service.FollowService;
 import com.committers.snowflowerthon.committersserver.domain.member.dto.MemberOtherResDto;
-import com.committers.snowflowerthon.committersserver.domain.member.dto.MemberOwnResDto;
 import com.committers.snowflowerthon.committersserver.domain.member.dto.MemberSearchResDto;
-import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
 import com.committers.snowflowerthon.committersserver.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
