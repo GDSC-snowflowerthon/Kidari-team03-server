@@ -3,6 +3,8 @@ package com.committers.snowflowerthon.committersserver.domain.univ.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import static java.lang.Math.max;
+
 @Getter
 @Builder
 @EqualsAndHashCode
@@ -24,4 +26,8 @@ public class Univ {
 
     @Column(nullable = false)
     private Long belonged; // 등록된 학생 수
+
+    public void updateTotalHeight(Long decre) {
+        this.totalHeight = max(this.totalHeight - decre, 0);
+    }
 }

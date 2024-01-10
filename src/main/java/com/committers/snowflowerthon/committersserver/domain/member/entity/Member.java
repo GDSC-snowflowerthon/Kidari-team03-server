@@ -55,4 +55,8 @@ public class Member {
     public void updateSnowflake(Long totalCommits) {
         this.snowflake = totalCommits;
     }
+
+    public void updateSnowmanHeight(Long newHeight) {
+        this.snowmanHeight = newHeight;
+    }
 }
