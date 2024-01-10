@@ -1,11 +1,15 @@
 package com.committers.snowflowerthon.committersserver.auth.jwt;
 
+import com.committers.snowflowerthon.committersserver.common.response.exception.ErrorCode;
+import com.committers.snowflowerthon.committersserver.common.response.exception.TokenException;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
+import com.committers.snowflowerthon.committersserver.domain.member.entity.Role;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -72,21 +76,21 @@ public class JwtUtils {
     public boolean validateToken(String token) {
         if (!StringUtils.hasText(token)) {
 //            throw new AppException(ErrorCode.JWT_TOKEN_NOT_EXISTS);
-            throw new RuntimeException("error: 에러커스텀요망");
+            throw new TokenException(ErrorCode.JWT_TOKEN_NOT_EXISTS);
         }
         if(isLogout(token)){
 //            throw new AppException(ErrorCode.JWT_TOKEN_EXPIRED);
-            throw new RuntimeException("error: 에러커스텀요망");
+            throw new TokenException(ErrorCode.LOG_OUT_JWT_TOKEN);
         }
         try {
             Claims claims = Jwts.parser().setSigningKey(jwtSecretKey).parseClaimsJws(token).getBody();
             return true;
         } catch (MalformedJwtException e) {
 //            throw new AppException(ErrorCode.WRONG_JWT_TOKEN);
-            throw new RuntimeException("error: 에러커스텀요망");
+            throw new TokenException(ErrorCode.WRONG_JWT_TOKEN);
         } catch (ExpiredJwtException e) {
 //            throw new AppException(ErrorCode.JWT_TOKEN_EXPIRED);
-            throw new RuntimeException("error: 에러커스텀요망");
+            throw new TokenException(ErrorCode.JWT_TOKEN_EXPIRED);
         }
     }
 
@@ -112,8 +116,8 @@ public class JwtUtils {
         return (Long) getClaims(token).get("memberId");
     }
 
-    public String getRoleFromToken(String token) {
-        return (String) getClaims(token).get("role");
+    public Role getRoleFromToken(String token) {
+        return (Role) getClaims(token).get("role");
     }
 
     public Claims getClaims(String token) {
