@@ -54,18 +54,12 @@ public class Member {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "itemId")
     private Item item; // 아이템 고유 번호
-  
+
     public void updateSnowflake(Long totalCommits) {
         this.snowflake = totalCommits;
     }
     public void updateSnowmanHeight(Long newHeight) {
         this.snowmanHeight = newHeight;
-    }
-    public void initializeSnowmanHeight(){
-        this.snowmanHeight = 1L;
-    }
-    public void growSnowmanHeight(){
-        this.snowmanHeight++;
     }
     public boolean useSnowflake(){
         if (this.snowflake <= 0) { // 0 이하이면 사용 불가

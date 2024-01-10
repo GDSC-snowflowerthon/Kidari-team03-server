@@ -1,5 +1,6 @@
 package com.committers.snowflowerthon.committersserver.domain.member.controller;
 
+import com.committers.snowflowerthon.committersserver.domain.member.dto.MemberInfoDto;
 import com.committers.snowflowerthon.committersserver.domain.member.dto.MemberOtherResDto;
 import com.committers.snowflowerthon.committersserver.domain.member.dto.MemberSearchResDto;
 import com.committers.snowflowerthon.committersserver.domain.member.service.MemberService;
@@ -14,33 +15,29 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    /*
-    // 내 정보 받아오는 부분 필요
-     */
+    @GetMapping("/home/myinfo") // 내 정보 조회
+    public ResponseEntity<MemberInfoDto> getMemberInfo() {
+        MemberInfoDto memberInfoDto = memberService.getMemberInfo();
+        return ResponseEntity.ok(memberInfoDto);
+    }
 
     @PatchMapping("/home/growth")
-    public  ResponseEntity<?> growSnowman(Long id) {
-        if (!memberService.growSnowman(id)) {
-            return ResponseEntity.badRequest().build(); //눈송이를 사용할 수 없음
+    public  ResponseEntity<?> growSnowman() {
+        if (memberService.growSnowman()) {
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(HttpStatus.valueOf(200));
     }
 
     @GetMapping("/buddy/search") // 유저 검색
     public ResponseEntity<MemberSearchResDto> searchMember(@RequestParam String nickname) {
-        MemberSearchResDto member = memberService.searchMember(nickname);
-        if (member == null) {
-            return ResponseEntity.notFound().build();
-        }
+        MemberSearchResDto member = memberService.searchMember(nickname); // 정확하게 입력한 경우만 찾음
         return ResponseEntity.ok(member);
     }
 
     @GetMapping("/user") // 유저 정보 페이지 조회
-    public ResponseEntity<MemberOtherResDto> getMemberInfo(@RequestParam String nickname) {
-        MemberOtherResDto member = memberService.getOtherMember(nickname);
-        if (member == null) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<MemberOtherResDto> getOtherMemberInfo(@RequestParam String nickname) {
+        MemberOtherResDto member = memberService.getOtherMemberInfo(nickname);
         return ResponseEntity.ok(member);
     }
 }

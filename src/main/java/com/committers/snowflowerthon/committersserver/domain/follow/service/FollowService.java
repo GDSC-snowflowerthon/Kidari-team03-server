@@ -1,9 +1,13 @@
 package com.committers.snowflowerthon.committersserver.domain.follow.service;
 
+import com.committers.snowflowerthon.committersserver.auth.config.AuthenticationUtils;
+import com.committers.snowflowerthon.committersserver.common.response.exception.ErrorCode;
+import com.committers.snowflowerthon.committersserver.common.response.exception.FollowException;
+import com.committers.snowflowerthon.committersserver.common.validation.ValidationService;
+import com.committers.snowflowerthon.committersserver.domain.follow.dto.FollowPatchedDto;
 import com.committers.snowflowerthon.committersserver.domain.follow.entity.Follow;
 import com.committers.snowflowerthon.committersserver.domain.follow.entity.FollowRepository;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
-import com.committers.snowflowerthon.committersserver.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,44 +18,57 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class FollowService {
-
+    private final ValidationService validationService;
     private final FollowRepository followRepository;
-    private final MemberService memberService;
-    private final Member member; // 추후 로그인한 유저 받아와야
 
-    public boolean followStatus(Long buddyId) {
-        Optional<Follow> optionalFollow = followRepository.findByMemberAndBuddyId(member, buddyId);
-        if (optionalFollow.isPresent()) { //찾은 결과가 있다면
-            return true;
-        } else {
+    public Follow createFollow(Member buddy){
+        Long memberId = AuthenticationUtils.getMemberId();
+        Member member = validationService.valMember(memberId);
+        return Follow.builder()
+                .buddyId(buddy.getId())
+                .member(member)
+                .build();
+    }
+
+    public Follow getFollow(Member buddy){ // 반환값이 NULL일 수 있음
+        Long memberId = AuthenticationUtils.getMemberId();
+        Member member = validationService.valMember(memberId);
+        Optional<Follow> optionalFollow = followRepository.findByMemberAndBuddyId(member, buddy.getId());
+        return optionalFollow.get();
+    }
+
+    public boolean followStatus(Member buddy) {
+        Follow follow = getFollow(buddy);
+        if (follow == null) {
             return false;
         }
-    }
-    public void changeFollowStatus(Long buddyId, boolean isFollowed) {
-        Optional<Follow> optionalFollow = followRepository.findByMemberAndBuddyId(member, buddyId);
-        if (optionalFollow.isPresent() && isFollowed) {
-            Follow follow = optionalFollow.get(); // 해당 팔로우 가져와 삭제
-            followRepository.delete(follow);
-        } else if (optionalFollow.isEmpty() && !isFollowed) {
-            Follow follow = Follow.builder()
-                    .member(member)
-                    .buddyId(buddyId)
-                    .build();
-            followRepository.save(follow); // 새로운 팔로우 저장
-        } else {
-            throw new RuntimeException(); //DB의 상태와 불일치 검증
-        }
+        return true;
     }
 
-    public List<Member> getBuddyList() { //친구 목록 받아오기
+    public FollowPatchedDto changeFollowStatus(String nickname, boolean isFollowed) {
+        Member buddy = validationService.valMember(nickname);
+        Follow follow = getFollow(buddy);
+        if (follow != null && isFollowed) {
+            followRepository.delete(follow); // 해당 팔로우 가져와 삭제
+        } else if (follow == null && !isFollowed) {
+            Follow newFollow = createFollow(buddy); //새로운 팔로우 생성
+            followRepository.save(newFollow); // 새로운 팔로우 저장
+        } else {
+            return null;
+        }
+        return new FollowPatchedDto(nickname, !isFollowed); //응답 생성해 반환
+    }
+
+    public List<Member> getBuddyList() {
+        Long memberId = AuthenticationUtils.getMemberId();
+        Member member = validationService.valMember(memberId);
         List<Follow> followList = followRepository.findAllByMember(member);
         if (followList == null || followList.isEmpty()) {
             return null;
-            //친구가 없는 경우 처리
         }
         List<Member> buddyList = new ArrayList<>();
         for (Follow follow : followList) {
-            Member buddy = memberService.getMemberById(follow.getBuddyId());
+            Member buddy = validationService.valMember(follow.getBuddyId());
             buddyList.add(buddy);
         }
         return buddyList;

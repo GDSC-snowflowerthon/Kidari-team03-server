@@ -7,7 +7,6 @@ import com.committers.snowflowerthon.committersserver.common.response.exception.
 import com.committers.snowflowerthon.committersserver.common.validation.ValidationService;
 import com.committers.snowflowerthon.committersserver.domain.commit.entity.Commit;
 import com.committers.snowflowerthon.committersserver.domain.commit.entity.CommitRepository;
-import com.committers.snowflowerthon.committersserver.domain.commit.service.CommitService;
 import com.committers.snowflowerthon.committersserver.domain.follow.service.FollowService;
 import com.committers.snowflowerthon.committersserver.domain.member.dto.MemberInfoDto;
 import com.committers.snowflowerthon.committersserver.domain.member.dto.MemberOtherResDto;
@@ -19,8 +18,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 import static org.apache.commons.lang3.math.NumberUtils.max;
 
@@ -35,55 +32,28 @@ public class MemberService {
     private final FollowService followService;
     private final GitHubService gitHubService;
 
-    public boolean growSnowman(Long id) {
-        Member member = getMemberById(id);
-        if (member == null || member.useSnowflake()) { // useSnowflake()가 눈송이 소모 성공시 true 반환함
+    public boolean growSnowman() {
+        Long memberId = authenticationUtils.getMemberId();
+        Member member = validationService.valMember(memberId);
+        if (!member.useSnowflake()){ // 눈송이를 사용하는 데 실패
             return false;
         }
-        member.growSnowmanHeight(); // snowmanHeight 필드의 값이 1 증가
+        member.updateSnowmanHeight(member.getSnowmanHeight() + 1); // snowmanHeight이 1 증가
         memberRepository.save(member);
         return true;
     }
 
-    /////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////
-    // 코드 수정 부탁드립니다(순환 참조 오류).
-    // validationService에 있는 val** 함수 호출해서 Member 검증해주세요!
-    // 여기 말고 다른 부분에서도 멤버 조회 및 검증은 모두 val** 함수로 바꿔주세요!
-    /////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////
-
-    /*
     public MemberSearchResDto searchMember(String nickname) {
-        Member member = getMemberByNickname(nickname);
-        if (member == null){
-            return null;
-        }
-        Boolean followStatus = followService.followStatus(member.getId());
-        return MemberSearchResDto.toDto(member, followStatus);
+        Member buddy = validationService.valMember(nickname);
+        Boolean followStatus = followService.followStatus(buddy);
+        return MemberSearchResDto.toDto(buddy, followStatus); // 팔로우 상태와 함께 보냄
     }
 
-    public MemberOtherResDto getOtherMember(String nickname){
-        Member member = getMemberByNickname(nickname);
-        if (member == null) {
-            return null;
-        }
-        Boolean followStatus = followService.followStatus(member.getId());
-        return MemberOtherResDto.toDto(member, followStatus);
+    public MemberOtherResDto getOtherMemberInfo(String nickname){
+        Member buddy = validationService.valMember(nickname);
+        Boolean followStatus = followService.followStatus(buddy);
+        return MemberOtherResDto.toDto(buddy, followStatus); // 팔로우 상태와 함께 보냄
     }
-
-    public Member getMemberById(Long id) {
-        Optional<Member> member = memberRepository.findById(id);
-        return member.orElse(null);
-    }
-
-    public Member getMemberByNickname(String nickname) {
-        Optional<Member> member = memberRepository.findByNickname(nickname);
-        return member.orElse(null);
-    }
-     */
 
     // 단일 유저 본인 정보 조회
     public MemberInfoDto getMemberInfo() {

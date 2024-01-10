@@ -13,17 +13,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class FollowController {
     private final FollowService followService;
-    private final MemberService memberService;
 
     @PatchMapping("/buddy/update")
     public ResponseEntity<FollowPatchedDto> patchFollow(@RequestParam String nickname, @RequestParam boolean isFollowed) {
-        Member buddy = memberService.getMemberByNickname(nickname);
-        if (buddy == null) {
-            return ResponseEntity.notFound().build(); //에러 처리 필요
-        }
-        followService.changeFollowStatus(buddy.getId(), isFollowed);
-        //아래는 검증용
-        FollowPatchedDto updateDto = new FollowPatchedDto(nickname, isFollowed);
-        return new ResponseEntity<FollowPatchedDto>(HttpStatus.CREATED);
+        FollowPatchedDto followPatchedDto = followService.changeFollowStatus(nickname, isFollowed);
+        return ResponseEntity.ok(followPatchedDto);
     }
+
+    @GetMapping("/ranking/buddy/list")
 }

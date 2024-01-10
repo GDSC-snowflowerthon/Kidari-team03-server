@@ -3,7 +3,7 @@ package com.committers.snowflowerthon.committersserver.domain.follow.dto;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class FollowPatchedDto {
+public class FollowRankingDto {
     private String nickname;
-    private boolean isFollowed;
+    private Long snowmanHeight;
 }

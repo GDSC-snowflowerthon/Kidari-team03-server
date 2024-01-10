@@ -1,6 +1,7 @@
 package com.committers.snowflowerthon.committersserver.common.validation;
 
 import com.committers.snowflowerthon.committersserver.common.response.exception.ErrorCode;
+import com.committers.snowflowerthon.committersserver.common.response.exception.FollowException;
 import com.committers.snowflowerthon.committersserver.common.response.exception.MemberException;
 import com.committers.snowflowerthon.committersserver.common.response.exception.UnivException;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
@@ -9,6 +10,8 @@ import com.committers.snowflowerthon.committersserver.domain.univ.entity.Univ;
 import com.committers.snowflowerthon.committersserver.domain.univ.entity.UnivRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -25,6 +28,14 @@ public class ValidationService {
     public Member valMember(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberException(ErrorCode.MEMBER_NOT_FOUND));
+    }
+    // 랭킹에서 리스트 반환 위해
+    public List<Member> valMemberList(String nickname) {
+        List<Member> memberList = memberRepository.findAllByNickname(nickname);
+        if (memberList == null || memberList.isEmpty()) {
+            throw new MemberException(ErrorCode.MEMBER_NOT_FOUND);
+        }
+        return memberList;
     }
 
     public Univ valUniv(Long univId) {
