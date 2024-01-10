@@ -42,6 +42,9 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role = Role.getDefaultRole(); // 유저 권한
 
+    @Column
+    private Boolean newAlarm; // 새로운 알림이 있는지
+
     // 단방향 매핑
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "univId")
@@ -51,12 +54,12 @@ public class Member {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "itemId")
     private Item item; // 아이템 고유 번호
-
-    @Column
-    private Boolean newAlarm; // 새로운 알림이 있는지
   
     public void updateSnowflake(Long totalCommits) {
         this.snowflake = totalCommits;
+    }
+    public void updateSnowmanHeight(Long newHeight) {
+        this.snowmanHeight = newHeight;
     }
     public void initializeSnowmanHeight(){
         this.snowmanHeight = 1L;
