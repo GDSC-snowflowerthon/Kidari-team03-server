@@ -28,15 +28,16 @@ public class AuthController {
         String redirectUrl = "https://kidari.site/redirect";
 
         log.info("AuthController의 login");
-        log.info("accessToken" + accessToken);
-        log.info("refreshToken" + refreshToken);
+        log.info("accessToken -> {}", accessToken);
+        log.info("refreshToken -> {}", refreshToken);
 
         HttpServletResponse response1 = authService.login(response, accessToken, refreshToken);
 
         // 별다른 대조 없이, 기등록된 닉네임이면 로그인 성공
-        authService.login(response, accessToken, refreshToken).sendRedirect(redirectUrl);
+        response1.sendRedirect(redirectUrl);
 
-        log.info("response" + response1);
+        log.info("response -> {}", response1.getHeader("Set-Cookie"));
+        log.info("response -> {}", response1.getHeaderNames());
 
     }
 

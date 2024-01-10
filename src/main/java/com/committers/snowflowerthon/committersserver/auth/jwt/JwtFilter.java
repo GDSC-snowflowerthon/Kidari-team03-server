@@ -39,6 +39,9 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
-        return path.startsWith("/api/auth") || path.equals("/redirect") || path.equals("http/login/oauth2/code/github");
+        return path.startsWith("/api/auth")
+                || path.equals("/api/auth/redirect")
+                || path.equals("/login/oauth2/code/github")
+                ;
     }
 }

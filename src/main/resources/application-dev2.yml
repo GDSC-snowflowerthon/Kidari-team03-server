@@ -1,0 +1,40 @@
+spring:
+  redis:
+    port: 6379 # 레디스 서버 포트
+    host: 127.0.0.1 # 레디스 서버 호스트
+#  mvc:
+#    cors:
+#      mapping: /**
+#      allowed-origins:
+#      allowed-methods: GET, POST, PUT, PATCH, DELETE
+  datasource:
+    url: jdbc:mysql://snowflowerthon.czlsnoazot7m.ap-northeast-2.rds.amazonaws.com:3306/snowflowerthon
+    username: admin
+    password: committers
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    open-in-view: false # 뷰 레이어에서의 지연 로딩이 비활성화(성능 이슈 방지)
+    hibernate:
+      ddl-auto: update # 애플리케이션 시작 시 데이터베이스 스키마를 유효성 검증만 하고, 변경은 수행하지 않음
+  logging:
+    level:
+      org:
+        hibernate:
+          type:
+            descriptor:
+              sql: trace
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: bc039b97d186450287ad
+            client-secret: 88a7be79497c7be5482c8f53ff301e355cf01082
+
+secret:
+  key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKb/4snaHoUpcJJuEghayTVfy3w3EUg19ftxM524fbpFwZsF2YqHP1HlaDcAtLdvNSuQWHemq53+fyxnQCyAFiUCAwEAAQ==
+  issuer: committers
+  time:
+    access: 2592000000 # 30일
+    refresh: 2592000000 # 30일
