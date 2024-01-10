@@ -1,11 +1,12 @@
 package com.committers.snowflowerthon.committersserver.auth.jwt;
 
+import com.committers.snowflowerthon.committersserver.auth.config.CustomAuthenticationToken;
+import com.committers.snowflowerthon.committersserver.domain.member.entity.Role;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -31,8 +32,17 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private void setAuthentication(String accessToken) {
         String nickname = jwtUtils.getNicknameFromToken(accessToken);
-        String role = jwtUtils.getRoleFromToken(accessToken);
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(nickname, "", List.of(new SimpleGrantedAuthority(role)));
+        Long memberId = jwtUtils.getMemberIdFromToken(accessToken);
+        Role role = jwtUtils.getRoleFromToken(accessToken);
+
+        CustomAuthenticationToken authenticationToken = new CustomAuthenticationToken(
+                nickname,
+                memberId,
+                role,
+                "",        // credentials
+                List.of(new SimpleGrantedAuthority(role.toString()))
+        );
+
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 
