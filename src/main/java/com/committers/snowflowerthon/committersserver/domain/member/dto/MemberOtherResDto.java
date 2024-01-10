@@ -14,14 +14,14 @@ public class MemberOtherResDto { // 유저 정보 페이지 조회
     private Long decoId;
     private boolean isFollowed;
 
-    public static MemberOtherResDto toDto(Member member) {
+    public static MemberOtherResDto toDto(Member member, Boolean followStatus) {
         return MemberOtherResDto.builder()
                 .nickname(member.getNickname())
                 .snowmanHeight(member.getSnowmanHeight())
                 .snowId(member.getItem().getSnowId())
                 .hatId(member.getItem().getHatId())
                 .decoId(member.getItem().getDecoId())
-                .isFollowed(false) // 추후 친구여부 찾는 메소드 만들어야
+                .isFollowed(followStatus)
                 .build();
     }
 }

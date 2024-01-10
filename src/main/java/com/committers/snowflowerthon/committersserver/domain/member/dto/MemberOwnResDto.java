@@ -23,7 +23,7 @@ public class MemberOwnResDto { // 내 정보 조회
                 .snowId(member.getItem().getSnowId())
                 .hatId(member.getItem().getHatId())
                 .decoId(member.getItem().getDecoId())
-                .newAlarm(member.isNewAlarm())
+                .newAlarm(member.getNewAlarm())
                 .build();
     }
 }

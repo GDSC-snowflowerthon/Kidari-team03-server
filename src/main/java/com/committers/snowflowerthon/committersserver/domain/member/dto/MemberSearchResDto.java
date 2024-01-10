@@ -11,11 +11,11 @@ public class MemberSearchResDto { // 유저 검색 결과에서 사용됨
     private Long snowmanHeight;
     private boolean isFollowed;
 
-    public static MemberSearchResDto toDto(Member member) {
+    public static MemberSearchResDto toDto(Member member, Boolean followStatus) {
         return MemberSearchResDto.builder()
                 .nickname(member.getNickname())
                 .snowmanHeight(member.getSnowmanHeight())
-                .isFollowed(false) // 추후 친구여부 찾는 메소드 만들어야
+                .isFollowed(followStatus)
                 .build();
     }
 }
