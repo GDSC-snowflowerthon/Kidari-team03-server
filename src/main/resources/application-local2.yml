@@ -1,0 +1,41 @@
+spring:
+
+  redis:
+    port: 6379 # 레디스 서버 포트
+    host: 127.0.0.1 # 레디스 서버 호스트
+
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/snowflowerthon
+    username: root
+    password: uckoo2021!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    open-in-view: false # 뷰 레이어에서의 지연 로딩이 비활성화(성능 이슈 방지)
+    hibernate:
+      ddl-auto: update
+
+  logging:
+    level:
+      org:
+        hibernate:
+          type:
+            descriptor:
+              sql: info
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: 522d28c3d086cd84f25e
+            client-secret: 86cb030471dfab8f18c792f2c428e10f5cba5320
+
+secret:
+
+  key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKb/4snaHoUpcJJuEghayTVfy3w3EUg19ftxM524fbpFwZsF2YqHP1HlaDcAtLdvNSuQWHemq53+fyxnQCyAFiUCAwEAAQ==
+  issuer: committers
+  time:
+    access: 2592000000 # 30일
+    refresh: 2592000000 # 30일
