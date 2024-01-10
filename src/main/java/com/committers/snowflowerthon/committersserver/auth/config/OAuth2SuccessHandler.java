@@ -7,6 +7,7 @@ import com.committers.snowflowerthon.committersserver.domain.commit.service.Comm
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.MemberRepository;
 import com.committers.snowflowerthon.committersserver.domain.member.service.AuthService;
+import com.committers.snowflowerthon.committersserver.domain.member.service.MemberService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,7 +29,7 @@ import java.util.Optional;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final MemberRepository memberRepository;
     private final AuthService authService;
-    private final CommitService commitService;
+    private final MemberService memberService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -60,7 +61,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         CustomToken token = authService.setToken(optionalMember.get(), response);
 
         if (!isNew) { // 기가입 유저
-            commitService.refreshSnowflake(optionalMember.get());
+            memberService.refreshSnowflake(optionalMember.get());
         }
 
         // Auth 컨트롤러로 리다이렉트

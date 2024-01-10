@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
