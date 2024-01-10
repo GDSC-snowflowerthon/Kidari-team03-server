@@ -28,7 +28,7 @@ public class SecurityConfig {
             "/api/auth/accessToken", //새로운 토큰 발급
             "/api/logout", // 로그아웃
             "/",
-            "https://kidari.site/redirect"
+            "/redirect"
     };
 
     @Bean
@@ -62,10 +62,10 @@ public class SecurityConfig {
 //                                .baseUri("/api/auth") // 사용자가 로그인하려고 할 때 리다이렉션되는 기본 URI
 //
 //                        ) // 커스텀 로그인 페이지가 필요하지 않으므로, 로그인 시 리다이렉션이 필요없다.
-                        .redirectionEndpoint( redirection -> redirection
-                                .baseUri("/auth/redirect") // OAuth 2.0 공급자로부터 코드가 리다이렉션될 때의 기본 URI
-
-                        ) // 리다이렉션 엔드포인트 설정
+//                        .redirectionEndpoint( redirection -> redirection
+//                                .baseUri("/api/auth/redirect") // OAuth 2.0 공급자로부터 코드가 리다이렉션될 때의 기본 URI
+//
+//                        ) // 리다이렉션 엔드포인트 설정
                         .successHandler(successHandler) // OAuth 2.0 로그인 성공 시의 핸들러를 설정
                         .userInfoEndpoint((endpoint)->endpoint
                                 .userService(customOAuth2UserService)) // 사용자 정보 엔드포인트에서 사용할 사용자 서비스를 설정

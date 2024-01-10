@@ -10,6 +10,7 @@ import com.committers.snowflowerthon.committersserver.domain.member.entity.Membe
 import com.committers.snowflowerthon.committersserver.domain.member.entity.MemberRepository;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Role;
 import com.committers.snowflowerthon.committersserver.domain.univ.entity.Univ;
+import com.committers.snowflowerthon.committersserver.domain.univ.entity.UnivRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class AuthService {
 
     private final JwtUtils jwtUtils;
     private final ItemRepository itemRepository;
+    private final UnivRepository univRepository;
     private final MemberRepository memberRepository;
     private final GitHubService gitHubService;
 
@@ -41,10 +43,10 @@ public class AuthService {
         response.addCookie(refreshCookie);
 
         log.info("AuthService의 login");
-        log.info("accessToken" + accessToken);
-        log.info("refreshToken" + refreshToken);
-        log.info("accessCookie" + accessCookie);
-        log.info("refreshCookie" + refreshCookie);
+        log.info("accessToken -> {}", accessToken);
+        log.info("refreshToken -> {}", refreshToken);
+        log.info("accessCookie -> {}", accessCookie);
+        log.info("refreshCookie -> {}", refreshCookie);
 
         return response;
     }
@@ -76,10 +78,24 @@ public class AuthService {
     public Optional<Member> signUp(OAuth2MemberDto memberDto) {
 
         log.info("회원가입 로직");
+        log.info("authService에서 memberDto -> {}", memberDto.getNickname());
 
         // item 객체 만들고 저장하기
         Item item = Item.builder().build(); // 자동 생성
         itemRepository.save(item);
+        log.info("아이템 객체 생성: " + item.getId() + " " + item.getSnowId() + " " + item.getHatId() + " " + item.getDecoId());
+
+        // default univ 객체 저장하기
+        Optional<Univ> defaultUniv = univRepository.findById(1L);
+        if (!defaultUniv.isPresent()) {
+            defaultUniv = Optional.ofNullable(Univ.builder()
+                    .univName("error")
+                    .belonged(0L)
+                    .totalHeight(0L)
+                    .build());
+            log.info("error 로직 대학 이름 -> {}", defaultUniv.get().getUnivName());
+            univRepository.save(defaultUniv.get());
+        }
 
         // member 객체 만들고 저장하기
         Member member = Member.builder()
@@ -89,9 +105,12 @@ public class AuthService {
 //                    .attacking(Long.valueOf(0)) // 자동 생성
 //                    .damage(Long.valueOf(0)) // 자동 생성
                 .role(Role.ROLE_MEMBER)
-                .univ(new Univ(0L, "none", 0L, 0L))
+                .univ(defaultUniv.get())
                 .item(itemRepository.findById(item.getId()).get())
                 .build();
+
+        log.info("member -> {}", member.getNickname());
+
         memberRepository.save(member);
 
         // 눈송이 수 업데이트

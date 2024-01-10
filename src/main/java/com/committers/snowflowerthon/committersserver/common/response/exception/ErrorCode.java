@@ -13,6 +13,7 @@ public enum ErrorCode {
 
     // Token
     WRONG_JWT_TOKEN(HttpStatus.UNAUTHORIZED.value(),"잘못된 JWT 서명입니다."),
+    LOG_OUT_JWT_TOKEN(HttpStatus.UNAUTHORIZED.value(),"로그아웃된 사용자입니다."),
     JWT_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED.value(),"JWT 토큰이 만료되었습니다."),
     JWT_TOKEN_NOT_EXISTS(HttpStatus.UNAUTHORIZED.value(),"헤더에 JWT 토큰 값이 존재하지 않습니다"),
 

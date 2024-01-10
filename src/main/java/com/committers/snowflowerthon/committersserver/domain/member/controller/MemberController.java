@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
-@RequestMapping("/api/v1")
 public class MemberController {
 
     private final MemberService memberService;
@@ -65,5 +63,4 @@ public class MemberController {
                 .build();
         return ResponseEntity.ok(otherMember);
     }
-
 }
