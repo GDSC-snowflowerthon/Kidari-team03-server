@@ -23,7 +23,12 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(404, "존재하지 않는 사용자입니다."),
 
     // GitHub
-    Github_Member_NOT_FOUND(404, "깃허브에 존재하지 않는 사용자입니다.");
+    Github_Member_NOT_FOUND(404, "깃허브에 존재하지 않는 사용자입니다."),
+
+    // Commit
+    COMMIT_NOT_FOUND(404, "커밋 기록이 존재하지 않습니다.")
+
+    ;
 
     private final int statusCode;
     private final String message;
