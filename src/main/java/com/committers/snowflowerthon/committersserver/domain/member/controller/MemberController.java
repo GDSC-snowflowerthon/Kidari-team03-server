@@ -6,6 +6,7 @@ import com.committers.snowflowerthon.committersserver.domain.member.dto.MemberSe
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
 import com.committers.snowflowerthon.committersserver.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,11 +20,19 @@ public class MemberController {
     /*
     // 내 정보 받아오는 부분 필요
      */
-    
+
     @PatchMapping("/home/growth")
-    public void growSnowman()
+    public  ResponseEntity<?> growSnowman(Long id) {
         Member member = memberService.getMemberById(id);
-        memberService.growSnowman(id);
+        if (member == null) {
+            return ResponseEntity.notFound().build();
+        }
+        if (member.useSnowflake()) { // 눈송이 소모
+            member.growSnowmanHeight(); // 키 키우기
+            return ResponseEntity.ok(HttpStatus.valueOf(200));
+        } else {
+            return ResponseEntity.badRequest().build(); //눈송이를 사용할 수 없음
+        }
     }
 
     @GetMapping("/buddy/search") // 유저 검색
@@ -32,7 +41,11 @@ public class MemberController {
         if (member == null) {
             return ResponseEntity.notFound().build();
         }
-        MemberSearchResDto searchedMember = MemberSearchResDto.toDto(member);
+        MemberSearchResDto searchedMember = MemberSearchResDto.builder()
+                .nickname(member.getNickname())
+                .snowmanHeight(member.getSnowmanHeight())
+                .isFollowed(false) // 추후 친구여부 찾는 메소드 만들어야
+                .build();
         return ResponseEntity.ok(searchedMember);
     }
 
@@ -42,7 +55,14 @@ public class MemberController {
         if (member == null) {
             return ResponseEntity.notFound().build();
         }
-        MemberOtherResDto otherMember = MemberOtherResDto.toDto(member);
+        MemberOtherResDto otherMember = MemberOtherResDto.builder()
+                .nickname(member.getNickname())
+                .snowmanHeight(member.getSnowmanHeight())
+                .snowId(member.getItem().getSnowId())
+                .hatId(member.getItem().getHatId())
+                .decoId(member.getItem().getDecoId())
+                .isFollowed(false) // 추후 친구여부 찾는 메소드 만들어야
+                .build();
         return ResponseEntity.ok(otherMember);
     }
 
