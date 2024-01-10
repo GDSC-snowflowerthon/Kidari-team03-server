@@ -20,36 +20,44 @@ public class Member {
 
     @Column(nullable = false)
     private String nickname; // 깃허브 아이디
-    
-    @Column(nullable = false)
-    private Long snowflake; // 눈송이 수
 
+    @Builder.Default
     @Column(nullable = false)
-    private Long snowmanHeight = 1L; // 눈사람 키; 초기 키: 1
-    
+    private Long snowflake = 0L; // 눈송이 수
+
+    @Builder.Default
+    @Column(nullable = false)
+    private Long snowmanHeight = 1L; // 눈사람 키
+
+    @Builder.Default
     @Column(nullable = false)
     private Long attacking = 0L; // 공격한 횟수
 
+    @Builder.Default
     @Column(nullable = false)
     private Long damage = 0L; // 공격 받은 횟수
-    
+
+    @Builder.Default
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Role role; // 유저 권한
+    private Role role = Role.getDefaultRole(); // 유저 권한
 
     // 단방향 매핑
-    @OneToOne(mappedBy = "Univ", fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "univId")
     private Univ univ; // 대학 고유 번호
 
     // 단방향 매핑
-    @OneToOne(mappedBy = "Item", fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "itemId")
     private Item item; // 아이템 고유 번호
 
     @Column
     private boolean newAlarm; // 새로운 알림이 있는지
-
+  
+    public void updateSnowflake(Long totalCommits) {
+        this.snowflake = totalCommits;
+    }
     public void initializeSnowmanHeight(){
         this.snowmanHeight = 1L;
     }
