@@ -21,12 +21,12 @@ public class Commit {
     private Long count; // 커밋 수
 
     // 단방향 매핑
-    @OneToOne(mappedBy = "Member", fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberId")
     private Member member;
 
-    public void updateCount(Long count) {
-        this.count = count;
+    public void updateCount(Long totalCommits) {
+        this.count = totalCommits;
     }
 }
 

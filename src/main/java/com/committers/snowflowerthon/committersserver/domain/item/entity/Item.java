@@ -15,13 +15,16 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "itemId")
     private Long id; // 아이템 고유 번호
-    
+
+    @Builder.Default
     @Column(nullable = false)
-    private Long snowId; // 눈송이
-    
+    private Long snowId = 0L; // 눈송이
+
+    @Builder.Default
     @Column(nullable = false)
-    private Long hatId; // 모자
-    
+    private Long hatId = 0L; // 모자
+
+    @Builder.Default
     @Column(nullable = false)
-    private Long decoId; // 장식
+    private Long decoId = 0L; // 장식
 }
