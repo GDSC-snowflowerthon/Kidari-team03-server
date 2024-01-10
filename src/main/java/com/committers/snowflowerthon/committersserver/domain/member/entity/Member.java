@@ -53,7 +53,7 @@ public class Member {
     private Item item; // 아이템 고유 번호
 
     @Column
-    private boolean newAlarm; // 새로운 알림이 있는지
+    private Boolean newAlarm; // 새로운 알림이 있는지
   
     public void updateSnowflake(Long totalCommits) {
         this.snowflake = totalCommits;
@@ -70,5 +70,11 @@ public class Member {
         }
         this.snowflake--;
         return true;
+    }
+    public void alarmUnchecked(){
+        this.newAlarm = true;
+    }
+    public void alarmChecked(){
+        this.newAlarm = false;
     }
 }
