@@ -28,7 +28,7 @@ public class SecurityConfig {
             "/api/auth/accessToken", //새로운 토큰 발급
             "/api/logout", // 로그아웃
             "/",
-            "https://kidari.site/redirect"
+            "/redirect"
     };
 
     @Bean
