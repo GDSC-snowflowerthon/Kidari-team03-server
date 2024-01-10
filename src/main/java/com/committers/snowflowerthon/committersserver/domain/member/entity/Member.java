@@ -64,4 +64,11 @@ public class Member {
     public void growSnowmanHeight(){
         this.snowmanHeight++;
     }
+    public boolean useSnowflake(){
+        if (this.snowflake <= 0) { // 0 이하이면 사용 불가
+            return false;
+        }
+        this.snowflake--;
+        return true;
+    }
 }
