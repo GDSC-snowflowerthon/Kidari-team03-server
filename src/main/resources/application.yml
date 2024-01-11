@@ -10,6 +10,6 @@ feign:
 
 logging:
   level:
-    com.example: DEBUG
-    web: TRACE
-    org.springframework.web: TRACE
+    com.example: INFO
+    web: INFO
+    org.springframework.web: INFO
