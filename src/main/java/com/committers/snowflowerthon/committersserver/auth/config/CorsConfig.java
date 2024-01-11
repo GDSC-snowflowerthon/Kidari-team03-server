@@ -20,6 +20,7 @@ public class CorsConfig {
 
         config.addAllowedOrigin("http://localhost");
         config.addAllowedOrigin("http://localhost:*");
+        config.addAllowedOrigin("http://localhost:5173");
         config.addAllowedOrigin("https://kidari.site");
         config.addAllowedOrigin("https://api.github.com"); // 깃허브 API 도메인
         config.addAllowedOrigin("https://github.com"); // 깃허브 인증 센터 도메인

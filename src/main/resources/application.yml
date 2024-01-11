@@ -6,7 +6,7 @@ feign:
   client:
     config:
       default:
-        logger-level: FULL
+        logger-level: INFO
 
 logging:
   level:
