@@ -20,5 +20,8 @@ else
 fi
 
 DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
+echo "> DEPLOY_PATH: $DEPLOY_PATH"
+echo "> JAR_NAME: $JAR_NAME"
+echo "> DEPLOY_JAR: $DEPLOY_JAR"
 echo "> DEPLOY_JAR 배포"    >> /home/ubuntu/deploy.log
 nohup java -jar $DEPLOY_JAR >> /home/ubuntu/deploy.log 2>/home/ubuntu/deploy_err.log &
