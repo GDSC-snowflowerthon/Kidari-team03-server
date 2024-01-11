@@ -83,9 +83,9 @@ jobs:
       # CodeDeploy에 배포 요청
       - name: Code Deploy Deployment Request
         run: |
-          aws deploy create-deployment --application-name kidari \
+          aws deploy create-deployment --application-name newkidari \
             --deployment-config-name CodeDeployDefault.OneAtATime \
-            --deployment-group-name kidari \
+            --deployment-group-name newkidari \
             --s3-location bucket=kidari,bundleType=zip,key=kidari-build.zip
 
       # 배포 결과 Slack 알람 전송
