@@ -1,6 +1,7 @@
 #!/bin/bash
 BUILD_JAR=$(ls /home/ubuntu/build/*.jar)
 JAR_NAME=$(basename $BUILD_JAR)
+rm /home/ubuntu/deploy.log
 echo "> build 파일명: $JAR_NAME" >> /home/ubuntu/deploy.log
 
 echo "> build 파일 복사" >> /home/ubuntu/deploy.log
