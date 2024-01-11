@@ -68,8 +68,8 @@ jobs:
         run: |
           mkdir deploy
           cp ./appspec.yml ./deploy/
-          cp ./dockerfile ./deploy/
-          #cp ./deploy.sh ./deploy/
+          #cp ./dockerfile ./deploy/
+          cp ./deploy.sh ./deploy/
           cp ./build/libs/*.jar ./deploy/
           zip -r -qq -j ./kidari-build.zip ./deploy
 
