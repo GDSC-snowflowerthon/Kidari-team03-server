@@ -42,6 +42,9 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role = Role.getDefaultRole(); // 유저 권한
 
+    @Column
+    private Boolean newAlarm; // 새로운 알림이 있는지
+
     // 단방향 매핑
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "univId")
@@ -54,5 +57,22 @@ public class Member {
 
     public void updateSnowflake(Long totalCommits) {
         this.snowflake = totalCommits;
+    }
+    public void updateSnowmanHeight(Long newHeight) {
+        this.snowmanHeight = newHeight;
+    }
+    public boolean useSnowflake(){
+        if (this.snowflake <= 0) { // 0 이하이면 사용 불가
+            return false;
+        }
+        this.snowflake--;
+        return true;
+    }
+
+    public void alarmUnchecked(){
+        this.newAlarm = true;
+    }
+    public void alarmChecked(){
+        this.newAlarm = false;
     }
 }

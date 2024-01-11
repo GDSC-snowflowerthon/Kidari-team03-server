@@ -1,10 +1,11 @@
 package com.committers.snowflowerthon.committersserver.domain.attack.entity;
 
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -20,10 +21,11 @@ public class Attack {
     private Long id; // 공격 고유 번호
 
     @Column(nullable = false)
-    private Date time; // 공격 시간
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd'T'HH:mm:ss", timezone = "Asia/Seoul") // 우선 서울 기준으로
+    private LocalDateTime time; // 공격 시간
 
     @Column(nullable = false)
-    private String attacker; // 공격자 깃허브 아이디
+    private Long attackerId; // 공격자 고유 아이디
 
     @Column(nullable = false)
     private Boolean isChecked; // 단일 공격값 조회 여부
@@ -32,4 +34,8 @@ public class Attack {
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member member; // 공격 받은 사람 고유 번호
+
+    public void checkAttack(){
+        this.isChecked = true;
+    }
 }
