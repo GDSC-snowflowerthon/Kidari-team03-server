@@ -39,4 +39,9 @@ public class ValidationService {
         return univRepository.findById(univId)
                 .orElseThrow(() -> new UnivException(ErrorCode.UNIV_NOT_FOUND));
     }
+
+    public Univ valUniv(String univName) { // 예외를 발생시키지 않음에 유의
+        return univRepository.findByUnivName(univName)
+                .orElse(null);
+    }
 }

@@ -26,9 +26,9 @@ import static org.apache.commons.lang3.math.NumberUtils.max;
 @Service
 public class MemberService {
     private final AuthenticationUtils authenticationUtils;
+    private final ValidationService validationService;
     private final MemberRepository memberRepository;
     private final CommitRepository commitRepository;
-    private final ValidationService validationService;
     private final FollowService followService;
     private final GitHubService gitHubService;
 
