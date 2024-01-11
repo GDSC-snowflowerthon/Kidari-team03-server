@@ -18,6 +18,8 @@ public class CorsConfig {
 //        config.addAllowedMethod("*"); // 모든 http 메소드에 요청 허용
 //        source.registerCorsConfiguration("/api/**", config);
 
+        config.addAllowedOrigin("http://localhost");
+        config.addAllowedOrigin("http://localhost:*");
         config.addAllowedOrigin("https://kidari.site");
         config.addAllowedOrigin("https://api.github.com"); // 깃허브 API 도메인
         config.addAllowedOrigin("https://github.com"); // 깃허브 인증 센터 도메인
