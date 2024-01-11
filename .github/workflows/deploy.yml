@@ -61,7 +61,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # 빌드파일을 ZIP 파일로 생성
+      # 빌드 파일을 ZIP 파일로 생성
       - name: Make zip file
         run: |
           mkdir deploy

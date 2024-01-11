@@ -53,22 +53,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew bootJar
 
-      # image로부터 Metadata 추출
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
-          tags: |
-            type=sha
-
-      # image 빌드 및 도커허브에 push
-      - name: web docker build and push
-        run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_ACCESS_TOKEN }}
-          docker build -t ${{ secrets.DOCKER_REPO }}/kidari:${{ steps.meta.outputs.version }} .
-          docker push ${{ secrets.DOCKER_REPO }}/kidari:${{ steps.meta.outputs.version }}
-
       # 빌드 결과 Slack 알람 전송
       - name: Send Slack Alarms
         uses: rtCamp/action-slack-notify@v2
