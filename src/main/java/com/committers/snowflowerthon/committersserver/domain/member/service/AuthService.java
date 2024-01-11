@@ -1,9 +1,9 @@
 package com.committers.snowflowerthon.committersserver.domain.member.service;
 
 import com.committers.snowflowerthon.committersserver.auth.config.OAuth2MemberDto;
-import com.committers.snowflowerthon.committersserver.auth.github.GitHubService;
 import com.committers.snowflowerthon.committersserver.auth.jwt.CustomToken;
 import com.committers.snowflowerthon.committersserver.auth.jwt.JwtUtils;
+import com.committers.snowflowerthon.committersserver.domain.commit.service.CommitService;
 import com.committers.snowflowerthon.committersserver.domain.item.entity.Item;
 import com.committers.snowflowerthon.committersserver.domain.item.entity.ItemRepository;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
@@ -29,7 +29,7 @@ public class AuthService {
     private final ItemRepository itemRepository;
     private final UnivRepository univRepository;
     private final MemberRepository memberRepository;
-    private final GitHubService gitHubService;
+    private final CommitService commitService;
 
     public HttpServletResponse login(HttpServletResponse response, String accessToken, String refreshToken) {
         // 쿠키 생성 및 추가
@@ -114,7 +114,7 @@ public class AuthService {
         memberRepository.save(member);
 
         // 눈송이 수 업데이트
-        gitHubService.setSnowflake(memberDto);
+        commitService.setSnowflake(memberDto);
 
         return memberRepository.findById(member.getId());
     }
