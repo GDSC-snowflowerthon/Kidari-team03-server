@@ -51,7 +51,9 @@ jobs:
 
       # Gradle로 빌드 실행
       - name: Build with Gradle
-        run: ./gradlew bootJar
+        run: |
+             chmod +x ./gradlew
+             ./gradlew bootJar
 
       # AWS에 연결
       - name: Connect to AWS
@@ -66,7 +68,7 @@ jobs:
         run: |
           mkdir deploy
           cp ./appspec.yml ./deploy/
-          cp ./dockerfile ./deploy/
+          #cp ./dockerfile ./deploy/
           cp ./deploy.sh ./deploy/
           cp ./build/libs/*.jar ./deploy/
           zip -r -qq -j ./kidari-build.zip ./deploy
@@ -81,9 +83,9 @@ jobs:
       # CodeDeploy에 배포 요청
       - name: Code Deploy Deployment Request
         run: |
-          aws deploy create-deployment --application-name kidari \
+          aws deploy create-deployment --application-name newkidari \
             --deployment-config-name CodeDeployDefault.OneAtATime \
-            --deployment-group-name kidari \
+            --deployment-group-name newkidari \
             --s3-location bucket=kidari,bundleType=zip,key=kidari-build.zip
 
       # 배포 결과 Slack 알람 전송
