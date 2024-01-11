@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
@@ -23,9 +25,8 @@ public class RankingController {
     }
 
     @GetMapping("/ranking/buddy/list")
-    public ResponseEntity<RankingBuddyDto> rankingBuddyList() {
-
-        RankingBuddyDto rankingBuddyDto = rankingService.getRankingList();
+    public ResponseEntity<List<RankingBuddyDto>> rankingBuddyList() {
+        List<RankingBuddyDto> rankingBuddyDto = rankingService.getBuddyRanking();
         return ResponseEntity.ok(rankingBuddyDto);
     }
 }
