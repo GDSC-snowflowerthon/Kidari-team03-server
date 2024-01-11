@@ -83,7 +83,7 @@ jobs:
       # CodeDeploy에 배포 요청
       - name: Code Deploy Deployment Request
         run: |
-          aws deploy create-deployment --application-name rekidari \
+          aws deploy create-deployment --application-name newkidari \
             --deployment-config-name CodeDeployDefault.OneAtATime \
             --deployment-group-name rekidari \
             --s3-location bucket=kidari,bundleType=zip,key=kidari-build.zip
