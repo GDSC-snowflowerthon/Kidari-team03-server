@@ -2,7 +2,7 @@ package com.committers.snowflowerthon.committersserver.auth.github;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -16,6 +16,7 @@ import java.util.List;
 public class GitHubService {
 
     private final GitHubClient gitHubClient;
+    @Value("${github.token}") String token;
 
     @Transactional
     public int getRepos(String nickname) {
@@ -33,7 +34,7 @@ public class GitHubService {
 //                    String.format(gitHubApi, nickname, page, perPage),
 //                    List.class);
 
-            List<RepoResponseDto> repos = gitHubClient.getRepo(nickname, page, perPage);
+            List<RepoResponseDto> repos = gitHubClient.getRepo(nickname, page, perPage, token);
 
             for (RepoResponseDto reponame : repos) {
                 log.info("특정 사용자의 레포지토리 이름-> {}", reponame.full_name);
@@ -90,7 +91,7 @@ public class GitHubService {
 //                    List.class);
 
             // GitHub API 호출 - 레포지토리의 기여자 통계 정보를 가져옴
-            List<CommitResponseDto> commits = gitHubClient.getCommit(repo.full_name);
+            List<CommitResponseDto> commits = gitHubClient.getCommit(repo.full_name, token);
 
             for(CommitResponseDto com : commits) {
                 log.info("커밋 sha -> {}", com.sha);
