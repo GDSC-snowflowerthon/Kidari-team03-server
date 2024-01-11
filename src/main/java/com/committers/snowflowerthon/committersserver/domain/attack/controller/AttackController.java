@@ -1,6 +1,6 @@
 package com.committers.snowflowerthon.committersserver.domain.attack.controller;
 
-import com.committers.snowflowerthon.committersserver.domain.attack.Dto.AttackDto;
+import com.committers.snowflowerthon.committersserver.domain.attack.dto.AttackDto;
 import com.committers.snowflowerthon.committersserver.domain.attack.service.AttackService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

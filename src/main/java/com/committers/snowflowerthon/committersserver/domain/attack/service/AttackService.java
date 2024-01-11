@@ -1,6 +1,6 @@
 package com.committers.snowflowerthon.committersserver.domain.attack.service;
 
-import com.committers.snowflowerthon.committersserver.domain.attack.Dto.AttackDto;
+import com.committers.snowflowerthon.committersserver.domain.attack.dto.AttackDto;
 import com.committers.snowflowerthon.committersserver.domain.attack.entity.Attack;
 import com.committers.snowflowerthon.committersserver.domain.attack.entity.AttackRepository;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
@@ -21,7 +21,7 @@ public class AttackService {
     private final AttackRepository attackRepository;
     private final MemberRepository memberRepository;
     private final MemberService memberService;
-
+/*
     public List<AttackDto> findAlarms() {
         Long memberId = 1L; //사용자 아이디
 
@@ -80,5 +80,5 @@ public class AttackService {
     public String getAttackerName(Attack attack){
         Member attacker = memberService.getMemberById(attack.getAttackerId());
         return attacker.getNickname();
-    }
+    }*/
 }
