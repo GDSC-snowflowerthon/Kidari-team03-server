@@ -12,10 +12,18 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true); // 내 서버가 응답할 때 json을 js에서 처리할 수 있게 할지 설정
-        config.addAllowedOrigin("*"); // 모든 ip에 응답 허용
-        config.addAllowedHeader("*"); // 모든 헤더에 응답 허용
-        config.addAllowedMethod("*"); // 모든 http 메소드에 요청 허용
+        config.setAllowCredentials(true);
+//        config.addAllowedOrigin("*"); // 모든 ip에 응답 허용
+//        config.addAllowedHeader("*"); // 모든 헤더에 응답 허용
+//        config.addAllowedMethod("*"); // 모든 http 메소드에 요청 허용
+//        source.registerCorsConfiguration("/api/**", config);
+
+        config.addAllowedOrigin("https://kidari.site");
+        config.addAllowedOrigin("https://api.github.com"); // 깃허브 API 도메인
+        config.addAllowedOrigin("https://github.com"); // 깃허브 인증 센터 도메인
+
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
         source.registerCorsConfiguration("/api/**", config);
 
         return new CorsFilter(source);
