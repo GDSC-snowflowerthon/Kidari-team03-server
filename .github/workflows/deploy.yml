@@ -5,7 +5,7 @@
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
-name: Java CI with Gradle
+name: Java CI with Gradle(deploy)
 
 on:
   push:
@@ -41,43 +41,60 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # application.yml 파일 생성
-      - name: make application.yaml
+      # application-prod.yml 파일 생성
+      - name: make application-prod.yml
         run: |
           cd ./src/main/resources
-          touch ./application.yml
-          echo "${{ secrets.APPLICATION }}" >> ./application.yml
+          touch ./application-prod.yml
+          echo "${{ secrets.APPLICATION }}" >> ./application-prod.yml
         shell: bash
 
       # Gradle로 빌드 실행
       - name: Build with Gradle
         run: ./gradlew bootJar
 
-      # image로부터 Metadata 추출
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
+      # AWS에 연결
+      - name: Connect to AWS
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          images: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
-          tags: |
-            type=sha
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      # image 빌드 및 도커허브에 push
-      - name: web docker build and push
+      # 빌드파일을 ZIP 파일로 생성
+      - name: Make zip file
         run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_ACCESS_TOKEN }}
-          docker build -t ${{ secrets.DOCKER_REPO }}/kidari:${{ steps.meta.outputs.version }} .
-          docker push ${{ secrets.DOCKER_REPO }}/kidari:${{ steps.meta.outputs.version }}
+          mkdir deploy
+          cp ./appspec.yml ./deploy/
+          cp ./dockerfile ./deploy/
+          cp ./deploy.sh ./deploy/
+          cp ./build/libs/*.jar ./deploy/
+          zip -r -qq -j ./kidari-build.zip ./deploy
 
-      # 빌드 결과 Slack 알람 전송
+      # S3에 zip 파일 업로드
+      - name: Upload to S3
+        run: |
+          aws s3 cp \
+            --region ap-northeast-2 \
+            ./kidari-build.zip s3://kidari 
+
+      # CodeDeploy에 배포 요청
+      - name: Code Deploy Deployment Request
+        run: |
+          aws deploy create-deployment --application-name kidari \
+            --deployment-config-name CodeDeployDefault.OneAtATime \
+            --deployment-group-name kidari \
+            --s3-location bucket=kidari,bundleType=zip,key=kidari-build.zip
+
+      # 배포 결과 Slack 알람 전송
       - name: Send Slack Alarms
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_CHANNEL: general
           SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
           SLACK_ICON: https://github.com/rtCamp.png?size=48
-          SLACK_MESSAGE: 빌드 결과 => ${{ job.status }}
-          SLACK_TITLE: 빌드 결과 알람
+          SLACK_MESSAGE: 배포 결과 => ${{ job.status }}
+          SLACK_TITLE: 배포 결과 알람
           SLACK_USERNAME: Notification-Bot
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: always()
