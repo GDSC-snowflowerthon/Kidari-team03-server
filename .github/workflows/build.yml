@@ -51,7 +51,9 @@ jobs:
 
       # Gradle로 빌드 실행
       - name: Build with Gradle
-        run: ./gradlew bootJar
+        run: |
+             chmod +x ./gradlew
+             ./gradlew bootJar
 
       # 빌드 결과 Slack 알람 전송
       - name: Send Slack Alarms
