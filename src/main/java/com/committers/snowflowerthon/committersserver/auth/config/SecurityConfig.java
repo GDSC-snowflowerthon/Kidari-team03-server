@@ -23,6 +23,7 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
 
     private String[] permitList={
+            "/login/oauth2/code/github",
             "/api/auth/**",
             "/api/auth/login", // 로그인 시 Jwt Filter를 거쳐버림 안 거치게 수정
             "/api/auth/redirect", // 로그인 시 Jwt Filter를 거쳐버림 안 거치게 수정
