@@ -1,9 +1,6 @@
 package com.committers.snowflowerthon.committersserver.domain.follow.service;
 
 import com.committers.snowflowerthon.committersserver.auth.config.AuthenticationUtils;
-import com.committers.snowflowerthon.committersserver.common.response.exception.ErrorCode;
-import com.committers.snowflowerthon.committersserver.common.response.exception.FollowException;
-import com.committers.snowflowerthon.committersserver.common.response.exception.ItemException;
 import com.committers.snowflowerthon.committersserver.common.validation.ValidationService;
 import com.committers.snowflowerthon.committersserver.domain.follow.dto.FollowPatchedDto;
 import com.committers.snowflowerthon.committersserver.domain.follow.entity.Follow;
@@ -14,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

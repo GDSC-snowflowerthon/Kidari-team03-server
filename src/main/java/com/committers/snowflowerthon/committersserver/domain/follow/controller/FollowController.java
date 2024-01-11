@@ -1,11 +1,8 @@
 package com.committers.snowflowerthon.committersserver.domain.follow.controller;
 
-import com.committers.snowflowerthon.committersserver.domain.follow.dto.FollowPatchedDto;
+import com.committers.snowflowerthon.committersserver.domain.follow.FollowRankingDto.FollowPatchedDto;
 import com.committers.snowflowerthon.committersserver.domain.follow.service.FollowService;
-import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
-import com.committers.snowflowerthon.committersserver.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
