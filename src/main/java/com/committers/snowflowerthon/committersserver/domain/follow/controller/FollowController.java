@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1")
 public class FollowController {
     private final FollowService followService;
 
@@ -19,6 +20,4 @@ public class FollowController {
         FollowPatchedDto followPatchedDto = followService.changeFollowStatus(nickname, isFollowed);
         return ResponseEntity.ok(followPatchedDto);
     }
-
-    @GetMapping("/ranking/buddy/list")
 }
