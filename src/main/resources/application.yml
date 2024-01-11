@@ -1,3 +1,15 @@
 spring:
   profiles:
     active: local2
+
+feign:
+  client:
+    config:
+      default:
+        logger-level: FULL
+
+logging:
+  level:
+    com.example: DEBUG
+    web: TRACE
+    org.springframework.web: TRACE

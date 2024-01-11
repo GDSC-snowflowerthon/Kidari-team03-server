@@ -3,6 +3,7 @@ application-dev2.yml
 application-dev.yml
 application-local2.yml
 application-local.yml
+application-prod.yml
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -39,3 +40,4 @@ out/
 
 ### VS Code ###
 .vscode/
+src/main/resources/application-pred.yml

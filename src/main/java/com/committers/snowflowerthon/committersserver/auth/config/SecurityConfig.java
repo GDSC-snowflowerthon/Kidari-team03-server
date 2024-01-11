@@ -28,6 +28,7 @@ public class SecurityConfig {
             "/api/auth/accessToken", //새로운 토큰 발급
             "/api/logout", // 로그아웃
             "/",
+            "/health", // elb healthCheck
             "/redirect"
     };
 
