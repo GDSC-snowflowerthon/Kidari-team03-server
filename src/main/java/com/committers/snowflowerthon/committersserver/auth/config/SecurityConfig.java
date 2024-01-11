@@ -24,6 +24,7 @@ public class SecurityConfig {
 
     private String[] permitList={
             "/api/auth/**",
+            "/api/auth/login", // 로그인 시 Jwt Filter를 거쳐버림 안 거치게 수정
             "/api/auth/redirect", // 로그인 시 Jwt Filter를 거쳐버림 안 거치게 수정
             "/api/auth/accessToken", //새로운 토큰 발급
             "/api/logout", // 로그아웃
