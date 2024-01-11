@@ -11,8 +11,10 @@ public interface GitHubClient {
     @RequestMapping(method = RequestMethod.GET, value = "/users/{nickname}/repos")
     List<RepoResponseDto> getRepo(@PathVariable("nickname") String nickname,
                                   @RequestParam("page") int page,
-                                  @RequestParam("perPage") int perPage);
+                                  @RequestParam("perPage") int perPage,
+                                  @RequestHeader("Authorization") String authHeader);
 
     @RequestMapping(method = RequestMethod.GET, value = "/repos/{repo}/commits")
-        List<CommitResponseDto> getCommit(@PathVariable("repo") String repo);
+        List<CommitResponseDto> getCommit(@PathVariable("repo") String repo,
+                                          @RequestHeader("Authorization") String authHeader);
 }
