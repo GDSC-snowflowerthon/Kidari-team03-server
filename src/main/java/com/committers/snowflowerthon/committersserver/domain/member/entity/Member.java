@@ -75,4 +75,8 @@ public class Member {
     public void alarmChecked(){
         this.newAlarm = false;
     }
+
+    public void updateUniv(Univ univ){
+        this.univ = univ;
+    }
 }

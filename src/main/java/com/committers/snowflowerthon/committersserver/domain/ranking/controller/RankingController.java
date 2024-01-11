@@ -1,7 +1,7 @@
 package com.committers.snowflowerthon.committersserver.domain.ranking.controller;
 
-import com.committers.snowflowerthon.committersserver.domain.ranking.dto.RankingBuddyDto;
 import com.committers.snowflowerthon.committersserver.domain.ranking.dto.MyRankDto;
+import com.committers.snowflowerthon.committersserver.domain.ranking.dto.RankDto;
 import com.committers.snowflowerthon.committersserver.domain.ranking.service.RankingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,20 +13,33 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/ranking")
 public class RankingController {
 
     private final RankingService rankingService;
 
-    @GetMapping("/ranking/buddy/own")
+    @GetMapping("/buddy/own")
     public ResponseEntity<MyRankDto> rankingBuddyOwn(){
         MyRankDto myRankDto = rankingService.getMyRank();
         return ResponseEntity.ok(myRankDto);
     }
 
-    @GetMapping("/ranking/buddy/list")
-    public ResponseEntity<List<RankingBuddyDto>> rankingBuddyList() {
-        List<RankingBuddyDto> rankingBuddyDto = rankingService.getBuddyRanking();
-        return ResponseEntity.ok(rankingBuddyDto);
+    @GetMapping("/buddy/list")
+    public ResponseEntity<List<RankDto>> rankingBuddyList() {
+        List<RankDto> rankDto = rankingService.getBuddyRanking();
+        return ResponseEntity.ok(rankDto);
     }
+
+    @GetMapping("/univ/own")
+    public ResponseEntity<MyRankDto> rankingUnivOwn(){
+        MyRankDto myUnivRankDto = rankingService.getMyUnivRank();
+        return ResponseEntity.ok(myUnivRankDto);
+    }
+
+    @GetMapping("/univ/list")
+    public ResponseEntity<List<RankDto>> rankingUnivList() {
+        List<RankDto> rankingUnivDto = rankingService.getUnivRanking();
+        return ResponseEntity.ok(rankingUnivDto);
+    }
+
 }

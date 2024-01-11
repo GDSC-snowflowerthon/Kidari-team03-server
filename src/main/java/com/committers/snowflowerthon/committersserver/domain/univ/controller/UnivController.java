@@ -1,7 +1,6 @@
 package com.committers.snowflowerthon.committersserver.domain.univ.controller;
 
 import com.committers.snowflowerthon.committersserver.domain.univ.dto.UnivSearchDto;
-import com.committers.snowflowerthon.committersserver.domain.univ.dto.UnivUpdateResDto;
 import com.committers.snowflowerthon.committersserver.domain.univ.service.UnivService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,5 +31,4 @@ public class UnivController {
             return ResponseEntity.status(HttpStatus.OK).body(null);
         }
     }
-    // 대학교 랭킹 추가 필요
 }

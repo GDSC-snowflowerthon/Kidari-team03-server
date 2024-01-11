@@ -26,14 +26,14 @@ public class ValidationService {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberException(ErrorCode.MEMBER_NOT_FOUND));
     }
-    // 랭킹에서 리스트 반환 위해
+    /*
     public List<Member> valMemberList(String nickname) {
         List<Member> memberList = memberRepository.findAllByNickname(nickname);
         if (memberList == null || memberList.isEmpty()) {
             throw new MemberException(ErrorCode.MEMBER_NOT_FOUND);
         }
         return memberList;
-    }
+    }*/
 
     public Univ valUniv(Long univId) {
         return univRepository.findById(univId)
@@ -44,4 +44,5 @@ public class ValidationService {
         return univRepository.findByUnivName(univName)
                 .orElse(null);
     }
+
 }
