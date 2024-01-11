@@ -1,6 +1,6 @@
 package com.committers.snowflowerthon.committersserver.domain.follow.controller;
 
-import com.committers.snowflowerthon.committersserver.domain.follow.FollowRankingDto.FollowPatchedDto;
+import com.committers.snowflowerthon.committersserver.domain.follow.dto.FollowPatchedDto;
 import com.committers.snowflowerthon.committersserver.domain.follow.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
