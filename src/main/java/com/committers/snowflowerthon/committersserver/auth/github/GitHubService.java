@@ -20,6 +20,7 @@ public class GitHubService {
 
     @Transactional
     public int getRepos(String nickname) {
+        /*
         RestTemplate restTemplate = new RestTemplate();
 
         int page = 1;
@@ -72,6 +73,10 @@ public class GitHubService {
 //            }
         }
         return totalCommits;
+
+         */
+
+        return 100;
     }
 
     private int getCommits(String nickname, List<RepoResponseDto> repositories) {
