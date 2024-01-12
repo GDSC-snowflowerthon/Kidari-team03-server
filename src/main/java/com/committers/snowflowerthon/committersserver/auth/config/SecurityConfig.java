@@ -51,11 +51,16 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedHeaders(Collections.singletonList("*"));
-        config.setAllowedMethods(Collections.singletonList("*"));
-        config.addAllowedOriginPattern("http://localhost:3000");
-        config.addAllowedOriginPattern("https://kidari.site");
-        config.addAllowedOriginPattern("https://kidari.site:3000");
+//        config.setAllowedHeaders(Collections.singletonList("*"));
+//        config.setAllowedMethods(Collections.singletonList("*"));
+//        config.addAllowedOriginPattern("http://localhost:3000");
+//        config.addAllowedOriginPattern("https://kidari.site");
+//        config.addAllowedOriginPattern("https://kidari.site:3000");
+//        config.setAllowCredentials(true);
+
+        config.addAllowedOriginPattern("*"); // addAllowedOrigin("*")은 allowCredentials(true)랑 같이 사용 불가능
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -67,7 +72,7 @@ public class SecurityConfig {
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic(HttpBasicConfigurer::disable)
-                .cors(Customizer.withDefaults())
+                .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeRequests) -> {
