@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "https://kidari.site")
 @RequestMapping("/api/v1")
 public class AttackController {
 

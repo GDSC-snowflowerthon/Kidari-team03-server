@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "https://kidari.site")
 @RequestMapping("/api/v1/item")
 public class ItemController {
 

@@ -76,7 +76,8 @@ public class JwtUtils {
     public boolean validateToken(String token) {
         if (!StringUtils.hasText(token)) {
 //            throw new AppException(ErrorCode.JWT_TOKEN_NOT_EXISTS);
-            throw new TokenException(ErrorCode.JWT_TOKEN_NOT_EXISTS);
+//            throw new TokenException(ErrorCode.JWT_TOKEN_NOT_EXISTS);
+            return false;
         }
         if(isLogout(token)){
 //            throw new AppException(ErrorCode.JWT_TOKEN_EXPIRED);
