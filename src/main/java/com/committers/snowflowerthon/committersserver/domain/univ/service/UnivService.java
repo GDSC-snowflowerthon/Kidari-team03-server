@@ -70,8 +70,8 @@ public class UnivService {
         }
     }
 
-
-    public UnivRegisterDto registerUniv(String univName, Boolean isRegistered){ //isRegistered는 현재 newUniv의 등록여부임
+    // 대학교 등록 or 취소
+    public UnivRegisterDto updateRegistration(String univName, Boolean isRegistered){ //isRegistered는 현재 newUniv의 등록여부임
         Univ newUniv = validationService.valUniv(univName);
         if (newUniv == null){
             throw new UnivException(ErrorCode.UNIV_NOT_FOUND);
@@ -83,30 +83,32 @@ public class UnivService {
 
         Member member = memberService.getAuthMember();
         Univ myUniv = validationService.valUniv(member.getUniv().getId()); // null일 경우 내가 등록중인 대학교가 없음
-        if (myUniv == null && !isRegistered) {
-            // 새 대학교 등록
-
-            member.updateUniv(newUniv);
-            memberRepository.save(member);
+        Univ updatedUniv;
+        if (myUniv == null && !isRegistered) { // 새 대학교 등록
+            updatedUniv = Univ.builder()
+                    .univName(newUniv.getUnivName())
+                    .totalHeight(newUniv.getTotalHeight() + member.getSnowmanHeight())
+                    .belonged(newUniv.getBelonged() + 1)
+                    .build();
+            member.updateUniv(updatedUniv);
         }
-        else if (myUniv != null && isRegistered) {
-            //등록 취소
-            //univ에서 belong 정보 업데이트
-            //totalHeight 정보 업데이트
-            //univRepo에 저장
-
-            // validationService에서 대학교 찾아서
-            // 등록 학생수 +1, 높이 합하고, 사용자의
+        else if (myUniv != null && isRegistered) { //등록 취소
+            updatedUniv = Univ.builder()
+                    .univName(myUniv.getUnivName())
+                    .totalHeight(myUniv.getTotalHeight() - member.getSnowmanHeight())
+                    .belonged(myUniv.getBelonged() - 1)
+                    .build();
             member.updateUniv(null);
-            memberRepository.save(member);
         }
         else {
             throw new UnivException(ErrorCode.UNIV_REGISTER_BAD_REQUEST);
         }
+        memberRepository.save(member);
+        univRepository.save(updatedUniv);
         return new UnivRegisterDto(newUniv.getUnivName(), !isRegistered);
     }
 
-    // 대학교 랭킹을 위해 대학 목록 불러옴
+    // 대학교 랭킹을 위해 대학 목록 반환
     public List<Univ> getAllUnivList() {
         List<Univ> univList = univRepository.findAll();
         if (univList == null || univList.isEmpty()) {

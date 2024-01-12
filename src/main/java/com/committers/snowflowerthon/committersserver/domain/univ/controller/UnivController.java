@@ -24,7 +24,7 @@ public class UnivController {
 
     @PatchMapping("/univ/update")
     public ResponseEntity<?> updateUniversity(@RequestParam String univName, @RequestParam Boolean isRegistered) {
-        UnivRegisterDto registration = univService.registerUniv(univName, isRegistered); // isRegistered는 그 대학교에 내가 등록되었는지
+        UnivRegisterDto registration = univService.updateRegistration(univName, isRegistered); // isRegistered는 그 대학교에 내가 등록되었는지
         if (registration == null) {
             return ResponseEntity.badRequest().body(ApiResponse.failure(ErrorCode.UNIV_CANNOT_BE_REGISTERED));
         } else {

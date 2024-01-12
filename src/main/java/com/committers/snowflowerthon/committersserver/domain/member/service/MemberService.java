@@ -14,6 +14,7 @@ import com.committers.snowflowerthon.committersserver.domain.member.dto.MemberSe
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.MemberRepository;
 import com.committers.snowflowerthon.committersserver.domain.univ.entity.Univ;
+import com.committers.snowflowerthon.committersserver.domain.univ.entity.UnivRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class MemberService {
     private final ValidationService validationService;
     private final MemberRepository memberRepository;
     private final CommitRepository commitRepository;
+    private final UnivRepository univRepository;
     private final FollowService followService;
     private final GitHubService gitHubService;
 
@@ -80,7 +82,7 @@ public class MemberService {
         return newMemberInfo;
     }
 
-    // 단일 멤버의 눈사람 키 갱신
+    // 단일 멤버의 눈사람 키 갱신 (멤버와 Univ의 totalHeight)
     public Member refreshHeight(Member member, Long decre, Long newHeight) {
 
         log.info("MemberService.refreshHeight");
@@ -97,6 +99,7 @@ public class MemberService {
         log.info("기존 totalHeight -> {}", univ.getTotalHeight());
 
         univ.updateTotalHeight(decre);
+        univRepository.save(univ);
         log.info("갱신된 totalHeight -> {}", univ.getTotalHeight());
 
         return member;
