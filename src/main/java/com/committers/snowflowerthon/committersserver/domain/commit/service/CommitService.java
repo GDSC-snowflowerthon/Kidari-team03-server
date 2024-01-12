@@ -30,6 +30,7 @@ public class CommitService {
     @Transactional
     public Long setSnowflake(OAuth2MemberDto memberDto) {
 
+        /*
         log.info("첫 가입 시 눈송이 설정: setSnowflake");
         log.info("memberDto -> {}", memberDto.getNickname());
 
@@ -56,5 +57,8 @@ public class CommitService {
         log.info("커밋 저장 되었는지 조회: commitRepository.findById -> {}", commitRepository.findById(commit.getId()));
 
         return totalCommits;
+
+         */
+        return 100L;
     }
 }

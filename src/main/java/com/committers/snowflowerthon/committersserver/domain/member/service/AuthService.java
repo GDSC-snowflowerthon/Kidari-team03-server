@@ -53,6 +53,7 @@ public class AuthService {
 
     public CustomToken setToken(Member member, HttpServletResponse response) {
 
+        /*
         log.info("로그인 로직");
 
         HashMap<String, String> m = new HashMap<>();
@@ -71,6 +72,12 @@ public class AuthService {
                 .build();
 
         log.info("{}", token);
+         */
+
+        CustomToken token = CustomToken.builder()
+                .accessToken("eyJhbGciOiJIUzI1NiJ9.eyJuaWNrbmFtZSI6IkdhbmdoZWUtTGVlLTA1MjIiLCJtZW1iZXJJZCI6MSwicm9sZSI6IlJPTEVfTUVNQkVSIiwiaWF0IjoxNzA1MDkwNjYwLCJleHAiOjE3MDc2ODI2NjB9.2O0vunX-WkIUI9oMDOdL9OnSz1sWuZzDiJTBdMdIkEk")
+                .refreshToken("eyJhbGciOiJIUzI1NiJ9.eyJuaWNrbmFtZSI6IkdhbmdoZWUtTGVlLTA1MjIiLCJtZW1iZXJJZCI6MSwicm9sZSI6IlJPTEVfTUVNQkVSIiwiaWF0IjoxNzA1MDkwNjYwLCJleHAiOjE3MDc2ODI2NjB9.2O0vunX-WkIUI9oMDOdL9OnSz1sWuZzDiJTBdMdIkEk")
+                .build();
 
         return token;
     }

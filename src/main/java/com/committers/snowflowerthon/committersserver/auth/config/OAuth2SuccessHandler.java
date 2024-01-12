@@ -60,9 +60,12 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // 로그인
         CustomToken token = authService.setToken(optionalMember.get(), response);
 
+        /*
         if (!isNew) { // 기가입 유저
             memberService.refreshSnowflake(optionalMember.get());
         }
+
+         */
 
         // Auth 컨트롤러로 리다이렉트
         // 를 하지마
