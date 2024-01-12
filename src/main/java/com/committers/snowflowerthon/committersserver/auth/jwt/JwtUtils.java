@@ -118,7 +118,7 @@ public class JwtUtils {
     }
 
     public Role getRoleFromToken(String token) {
-        return (Role) getClaims(token).get("role");
+        return Role.valueOf(getClaims(token).get("role").toString());
     }
 
     public Claims getClaims(String token) {
