@@ -36,12 +36,18 @@ public class RankingController {
     @GetMapping("/univ/own")
     public ResponseEntity<?> rankingUnivOwn(){
         MyUnivRankDto myUnivRankDto = rankingService.getMyUnivRank();
+        if (myUnivRankDto == null){
+            return ResponseEntity.ok().body(ApiResponse.success(new MyUnivRankDto("none", 0)));
+        }
         return ResponseEntity.ok().body(ApiResponse.success(myUnivRankDto));
     }
 
     @GetMapping("/univ/list")
     public ResponseEntity<?> rankingUnivList() {
         List<RankingUnivDto> rankingList = rankingService.getUnivRanking();
+        if (rankingList == null){
+            return ResponseEntity.ok().body(ApiResponse.success()); // 아직 DB에 대학교가 없음
+        }
         return ResponseEntity.ok().body(ApiResponse.success(rankingList));
     }
 

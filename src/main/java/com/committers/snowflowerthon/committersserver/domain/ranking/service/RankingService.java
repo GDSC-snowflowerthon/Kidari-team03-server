@@ -27,8 +27,10 @@ public class RankingService {
 
     public MyRankDto getMyRank() {
         Member member = memberService.getAuthMember();
-        int myRank = getBuddyRanking().indexOf(member) + 1; // 나를 포함하는 랭킹
-        return new MyRankDto(myRank);
+        List<Member> buddyList = followService.getBuddyList();
+        buddyList.add(member); // 사용자를 추가한 후 내림차순 정렬해 사용자의 순위를 구함
+        buddyList.sort(Comparator.comparing(Member::getSnowmanHeight).reversed());
+        return new MyRankDto(buddyList.indexOf(member) + 1);
     }
 
     public List<RankingBuddyDto> getBuddyRanking() {
@@ -50,16 +52,16 @@ public class RankingService {
     public MyUnivRankDto getMyUnivRank() {
         Univ myUniv = memberService.getAuthMember().getUniv();
         if (myUniv == null){ // 소속된 대학이 없음
-            return new MyUnivRankDto("none", 0);
+            return null;
         }
-        List<RankingUnivDto> rankingList = getUnivRanking();
-        return new MyUnivRankDto(myUniv.getUnivName(), rankingList.indexOf(myUniv) + 1);
+        List<Univ> univList = univService.getAllUnivList();
+        return new MyUnivRankDto(myUniv.getUnivName(), univList.indexOf(myUniv) + 1);
     }
 
     public List<RankingUnivDto> getUnivRanking() {
         List<Univ> univList = univService.getAllUnivList();
         if (univList == null || univList.isEmpty())
-            return null; // 아직 유저가 등록된 대학이 없어서 랭킹이 보여지지 않음
+            return null; // 아직 유저가 등록된 대학교가 존재하지 않음
         List<RankingUnivDto> rankingList = new ArrayList<>();
         for (Univ univ : univList) {
             if (univ.getBelonged() == 0) // 1명 이상이 등록된 대학교만 띄움
