@@ -51,11 +51,16 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedHeaders(Collections.singletonList("*"));
-        config.setAllowedMethods(Collections.singletonList("*"));
-        config.addAllowedOriginPattern("http://localhost:3000");
-        config.addAllowedOriginPattern("https://kidari.site");
-        config.addAllowedOriginPattern("https://kidari.site:3000");
+//        config.setAllowedHeaders(Collections.singletonList("*"));
+//        config.setAllowedMethods(Collections.singletonList("*"));
+//        config.addAllowedOriginPattern("http://localhost:3000");
+//        config.addAllowedOriginPattern("https://kidari.site");
+//        config.addAllowedOriginPattern("https://kidari.site:3000");
+//        config.setAllowCredentials(true);
+
+        config.addAllowedOriginPattern("*"); // addAllowedOrigin("*")은 allowCredentials(true)랑 같이 사용 불가능
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -67,7 +72,7 @@ public class SecurityConfig {
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic(HttpBasicConfigurer::disable)
-                .cors(Customizer.withDefaults())
+                .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeRequests) -> {
@@ -85,12 +90,12 @@ public class SecurityConfig {
                 )
                 // OAuth 2.0 로그인 설정 시작
                 .oauth2Login( (oauth2Login) -> oauth2Login
-                        .authorizationEndpoint(authorization -> authorization // 인증 엔드포인트 설정
-                                .baseUri("/login/oauth2/code") // 사용자가 로그인하려고 할 때 리다이렉션되는 기본 URI
-
-                        ) // 커스텀 로그인 페이지가 필요하지 않으므로, 로그인 시 리다이렉션이 필요없다.
+//                        .authorizationEndpoint(authorization -> authorization // 인증 엔드포인트 설정
+////                                .baseUri("/login/oauth2/code") // 사용자가 로그인하려고 할 때 리다이렉션되는 기본 URI
+////
+////                        ) // 커스텀 로그인 페이지가 필요하지 않으므로, 로그인 시 리다이렉션이 필요없다.
                         .redirectionEndpoint( redirection -> redirection
-                                .baseUri("/login/oauth2/code") // OAuth 2.0 공급자로부터 코드가 리다이렉션될 때의 기본 URI
+                                .baseUri("/login/oauth2/code/github") // OAuth 2.0 공급자로부터 코드가 리다이렉션될 때의 기본 URI
 //
                         ) // 리다이렉션 엔드포인트 설정
                         .successHandler(successHandler) // OAuth 2.0 로그인 성공 시의 핸들러를 설정
