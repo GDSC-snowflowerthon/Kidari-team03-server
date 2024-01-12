@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin(origins = "https://kidari.site")
+@CrossOrigin(origins = "https://kidari.site", allowedHeaders = "*")
 @RequestMapping("/api/v1")
 public class MemberController {
 

@@ -8,6 +8,7 @@ import com.committers.snowflowerthon.committersserver.domain.ranking.dto.Ranking
 import com.committers.snowflowerthon.committersserver.domain.ranking.service.RankingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "https://kidari.site", allowedHeaders = "*")
 @RequestMapping("/api/v1/ranking")
 public class RankingController {
 

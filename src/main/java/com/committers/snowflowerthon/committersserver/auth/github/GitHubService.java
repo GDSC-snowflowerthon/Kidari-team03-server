@@ -94,9 +94,13 @@ public class GitHubService {
             List<CommitResponseDto> commits = gitHubClient.getCommit(repo.full_name, token);
 
             for(CommitResponseDto com : commits) {
+                String committer = com.author.login;
+                if(committer.isEmpty() || committer.isBlank()) {
+                    log.info("커미터 부재");
+                    continue;
+                }
                 log.info("커밋 sha -> {}", com.sha);
                 log.info("커미터 -> {}", com.author.login);
-                String committer = com.author.login;
                 if (committer.equals(nickname)) {
                     totalCommits++;
                 }

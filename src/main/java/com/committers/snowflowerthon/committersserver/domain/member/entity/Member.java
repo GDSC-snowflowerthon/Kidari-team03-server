@@ -44,8 +44,9 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role = Role.getDefaultRole(); // 유저 권한
 
-    @Column
-    private Boolean newAlarm; // 새로운 알림이 있는지
+    @Builder.Default
+    @Column(nullable = false)
+    private Boolean newAlarm = false; // 새로운 알림이 있는지
 
     // 단방향 매핑
     @OneToOne(fetch = FetchType.LAZY)

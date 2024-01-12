@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "https://kidari.site")
+@CrossOrigin(origins = "https://kidari.site", allowedHeaders = "*")
 @RequestMapping("/api/v1")
 public class AttackController {
 

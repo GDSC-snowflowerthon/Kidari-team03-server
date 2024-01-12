@@ -89,7 +89,7 @@ public class AuthService {
         Optional<Univ> defaultUniv = univRepository.findById(1L);
         if (!defaultUniv.isPresent()) {
             defaultUniv = Optional.ofNullable(Univ.builder()
-                    .univName("error")
+                    .univName("none")
                     .belonged(0L)
                     .totalHeight(0L)
                     .build());
