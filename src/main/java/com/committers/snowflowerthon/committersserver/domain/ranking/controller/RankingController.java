@@ -3,7 +3,6 @@ package com.committers.snowflowerthon.committersserver.domain.ranking.controller
 import com.committers.snowflowerthon.committersserver.common.response.ApiResponse;
 import com.committers.snowflowerthon.committersserver.domain.ranking.dto.MyRankDto;
 import com.committers.snowflowerthon.committersserver.domain.ranking.dto.MyUnivRankDto;
-import com.committers.snowflowerthon.committersserver.domain.ranking.dto.RankDto;
 import com.committers.snowflowerthon.committersserver.domain.ranking.dto.RankingBuddyDto;
 import com.committers.snowflowerthon.committersserver.domain.ranking.dto.RankingUnivDto;
 import com.committers.snowflowerthon.committersserver.domain.ranking.service.RankingService;
