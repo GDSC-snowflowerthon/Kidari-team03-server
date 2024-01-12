@@ -29,7 +29,7 @@ public class FollowService {
     }
 
     // 팔로우 관계를 변경함
-    public FollowPatchedDto changeFollowStatus(String nickname, boolean isFollowed) {
+    public FollowPatchedDto changeFollowStatus(String nickname, Boolean isFollowed) {
         Member buddy = validationService.valMember(nickname);
         Follow follow = getFollowRelation(buddy);
         if (follow != null && isFollowed) {
@@ -38,9 +38,9 @@ public class FollowService {
             Follow newFollow = createFollow(buddy); //새로운 팔로우 생성
             followRepository.save(newFollow); // 새로운 팔로우 저장
         } else {
-            return null;
+            return null; // 사용자 '본인'인 경우, 또는 isFollowed가 잘못된 값이 넘어왔을 수 있음
         }
-        return new FollowPatchedDto(nickname, !isFollowed); //응답 생성해 반환
+        return new FollowPatchedDto(nickname, !isFollowed); //응답 생성해 반환: 보내는 isFollowed 값이 변경됨
     }
 
     // 1:1 연결된 Follow 관계를 받아옴
@@ -52,7 +52,7 @@ public class FollowService {
     }
 
     // otherMember를 내가 팔로우 중인지, 현재 팔로우 상태를 반환함
-    public boolean followStatus(Member otherMember) {
+    public Boolean followStatus(Member otherMember) {
         Follow follow = getFollowRelation(otherMember);
         if (follow == null) {
             return false;
