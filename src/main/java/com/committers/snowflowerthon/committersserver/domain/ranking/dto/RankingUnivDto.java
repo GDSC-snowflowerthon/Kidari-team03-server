@@ -1,15 +1,15 @@
-package com.committers.snowflowerthon.committersserver.domain.follow.dto;
+package com.committers.snowflowerthon.committersserver.domain.ranking.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FollowPatchedDto {
+public class RankingUnivDto {
     private String nickname;
-    private boolean isFollowed;
+    private Long snowmanHeight;
 }

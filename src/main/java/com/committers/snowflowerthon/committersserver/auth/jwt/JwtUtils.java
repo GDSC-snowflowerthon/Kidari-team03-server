@@ -114,7 +114,7 @@ public class JwtUtils {
     }
 
     public Long getMemberIdFromToken(String token) {
-        return (Long) getClaims(token).get("memberId");
+        return Long.valueOf(getClaims(token).get("memberId").toString());
     }
 
     public Role getRoleFromToken(String token) {

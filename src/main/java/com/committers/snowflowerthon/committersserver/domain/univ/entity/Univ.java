@@ -27,7 +27,7 @@ public class Univ {
     @Column(nullable = false)
     private Long belonged; // 등록된 학생 수
 
-    public void updateTotalHeight(Long decre) {
-        this.totalHeight = max(this.totalHeight - decre, 0);
+    public void updateTotalHeight(Long diff) {
+        this.totalHeight = max(this.totalHeight + diff, 0);
     }
 }

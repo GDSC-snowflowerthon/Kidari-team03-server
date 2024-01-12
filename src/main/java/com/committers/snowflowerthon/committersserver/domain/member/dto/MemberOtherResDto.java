@@ -3,9 +3,13 @@ package com.committers.snowflowerthon.committersserver.domain.member.dto;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class MemberOtherResDto { // 유저 정보 페이지 조회
     private String nickname;
     private Long snowmanHeight;

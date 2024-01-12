@@ -6,6 +6,7 @@ import com.committers.snowflowerthon.committersserver.auth.jwt.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -47,26 +48,26 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-
-        CorsConfiguration config = new CorsConfiguration();
-//        config.setAllowedHeaders(Collections.singletonList("*"));
-//        config.setAllowedMethods(Collections.singletonList("*"));
-//        config.addAllowedOriginPattern("http://localhost:3000");
-//        config.addAllowedOriginPattern("https://kidari.site");
-//        config.addAllowedOriginPattern("https://kidari.site:3000");
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//
+//        CorsConfiguration config = new CorsConfiguration();
+////        config.setAllowedHeaders(Collections.singletonList("*"));
+////        config.setAllowedMethods(Collections.singletonList("*"));
+////        config.addAllowedOriginPattern("http://localhost:3000");
+////        config.addAllowedOriginPattern("https://kidari.site");
+////        config.addAllowedOriginPattern("https://kidari.site:3000");
+////        config.setAllowCredentials(true);
+//
+//        config.addAllowedOriginPattern("*"); // addAllowedOrigin("*")은 allowCredentials(true)랑 같이 사용 불가능
+//        config.addAllowedMethod("*");
+//        config.addAllowedHeader("*");
 //        config.setAllowCredentials(true);
-
-        config.addAllowedOriginPattern("*"); // addAllowedOrigin("*")은 allowCredentials(true)랑 같이 사용 불가능
-        config.addAllowedMethod("*");
-        config.addAllowedHeader("*");
-        config.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", config);
+//        return source;
+//    }
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -78,6 +79,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests) -> {
                     authorizeRequests
                             .requestMatchers(permitList).permitAll()
+                            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                             .anyRequest().hasAnyAuthority("ROLE_MEMBER");
                 })
 

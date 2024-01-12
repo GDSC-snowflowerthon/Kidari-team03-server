@@ -14,6 +14,7 @@ import com.committers.snowflowerthon.committersserver.domain.member.dto.MemberSe
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.MemberRepository;
 import com.committers.snowflowerthon.committersserver.domain.univ.entity.Univ;
+import com.committers.snowflowerthon.committersserver.domain.univ.entity.UnivRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,38 +30,43 @@ public class MemberService {
     private final ValidationService validationService;
     private final MemberRepository memberRepository;
     private final CommitRepository commitRepository;
+    private final UnivRepository univRepository;
     private final FollowService followService;
     private final GitHubService gitHubService;
 
+    // 사용자 Member 받아오기
     public Member getAuthMember() {
         Long memberId = authenticationUtils.getMemberId();
         Member member = validationService.valMember(memberId);
         return member;
     }
 
+    // 눈사람 키 키우기
     public boolean growSnowman() {
         Member member = getAuthMember();
-        if (!member.useSnowflake()){ // 눈송이를 사용하는 데 실패
+        if (!member.useSnowflake()){ // 눈송이를 사용에 실패한 경우 false 반환
             return false;
         }
-        member.updateSnowmanHeight(member.getSnowmanHeight() + 1); // snowmanHeight이 1 증가
-        memberRepository.save(member);
+        member = refreshHeight(member, 1L, member.getSnowmanHeight() + 1);
+        log.info("memberService 반환값 -> {}", member);
         return true;
     }
 
+    // 유저를 nickname으로 검색, 내가 follow중인 상태인지와 함께 보냄
     public MemberSearchResDto searchMember(String nickname) {
         Member buddy = validationService.valMember(nickname);
         Boolean followStatus = followService.followStatus(buddy);
-        return MemberSearchResDto.toDto(buddy, followStatus); // 팔로우 상태와 함께 보냄
+        return MemberSearchResDto.toDto(buddy, followStatus);
     }
 
+    // 다른 유저 정보 조회
     public MemberOtherResDto getOtherMemberInfo(String nickname){
         Member buddy = validationService.valMember(nickname);
         Boolean followStatus = followService.followStatus(buddy);
         return MemberOtherResDto.toDto(buddy, followStatus); // 팔로우 상태와 함께 보냄
     }
 
-    // 단일 유저 본인 정보 조회
+    // 유저 본인 정보 조회
     public MemberInfoDto getMemberInfo() {
         Member member = getAuthMember();
 
@@ -76,15 +82,16 @@ public class MemberService {
         return newMemberInfo;
     }
 
-    // 단일 멤버의 눈사람 키 갱신
-    public Member refreshHeight(Member member, Long decre, Long newHeight) {
+    // 단일 멤버의 눈사람 키 갱신 (멤버와 Univ의 totalHeight), diff는 양수(키우기) 또는 음수(공격받음)
+    public Member refreshHeight(Member member, Long diff, Long newHeight) {
 
         log.info("MemberService.refreshHeight");
-        log.info("decre -> {}", decre);
+        log.info("decre -> {}", diff);
         log.info("newHeight -> {}", newHeight);
 
         // 멤버의 눈사람 키 갱신
         member.updateSnowmanHeight(newHeight);
+        memberRepository.save(member);
         log.info("갱신된 멤버의 snowHeight -> {}", member.getSnowmanHeight());
 
         // Univ의 totalHeight 갱신
@@ -92,7 +99,8 @@ public class MemberService {
         log.info("대학명: " + univ.getUnivName());
         log.info("기존 totalHeight -> {}", univ.getTotalHeight());
 
-        univ.updateTotalHeight(decre);
+        univ.updateTotalHeight(diff);
+        univRepository.save(univ);
         log.info("갱신된 totalHeight -> {}", univ.getTotalHeight());
 
         return member;
@@ -149,7 +157,7 @@ public class MemberService {
         log.info("갱신된 멤버 객체의 눈송이 수 -> {}", memberRepository.findById(member.getId()));
 
         // 현재 눈사람 키로 멤버 객체 갱신
-        member = refreshHeight(member, decre, newHeight);
+        member = refreshHeight(member, (-1)*decre, newHeight);
 
         return newSnowflake;
     }

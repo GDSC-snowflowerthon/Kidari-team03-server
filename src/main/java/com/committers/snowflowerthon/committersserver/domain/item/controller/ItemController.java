@@ -1,5 +1,7 @@
 package com.committers.snowflowerthon.committersserver.domain.item.controller;
 
+import com.committers.snowflowerthon.committersserver.common.response.ApiResponse;
+import com.committers.snowflowerthon.committersserver.common.response.exception.ErrorCode;
 import com.committers.snowflowerthon.committersserver.domain.item.dto.ItemDto;
 import com.committers.snowflowerthon.committersserver.domain.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -8,24 +10,24 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "https://kidari.site")
-@RequestMapping("/api/v1/item")
+@CrossOrigin(origins = "https://kidari.site", allowedHeaders = "*")
+@RequestMapping("/api/v1")
 public class ItemController {
 
     private final ItemService itemService;
 
-    @GetMapping("/") //꾸미기 화면에서 사용하는 api
-    public ResponseEntity<ItemDto> getItems(){
+    @GetMapping("/item") // 아이템 조회
+    public ResponseEntity<?> getItems(){
         ItemDto itemDto = itemService.getCurrentItems();
-        return ResponseEntity.ok(itemDto);
+        return ResponseEntity.ok().body(ApiResponse.success(itemDto));
     }
 
-    @PatchMapping("/update")
-    public ResponseEntity<ItemDto> updateItem(@RequestBody ItemDto reqItemDto) {
+    @PatchMapping("/item/update") // 아이템 변경
+    public ResponseEntity<?> patchItems(@RequestBody ItemDto reqItemDto) {
         if (reqItemDto == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(ApiResponse.failure(ErrorCode.ITEM_NOT_FOUND));
         }
-        ItemDto itemDto = itemService.updateItem(reqItemDto);
-        return ResponseEntity.ok(itemDto);
+        ItemDto itemDto = itemService.patchNewItems(reqItemDto);
+        return ResponseEntity.ok().body(ApiResponse.success(itemDto));
     }
 }
