@@ -131,6 +131,7 @@ public class MemberService {
     @Transactional
     public Long refreshSnowflake(Member member) {
 
+        /*
         // 갱신된 눈송이
         Long newSnowflake = 0L;
         // 눈사람 키
@@ -185,5 +186,9 @@ public class MemberService {
         member = refreshHeight(member, (-1)*decre, newHeight);
 
         return newSnowflake;
+
+         */
+
+        return 50L;
     }
 }
