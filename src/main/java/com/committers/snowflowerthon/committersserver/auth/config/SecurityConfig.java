@@ -43,8 +43,10 @@ public class SecurityConfig {
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
-
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/api/auth/redirect") // 원하는 로그인 페이지로 설정
+                        .permitAll()
+                )
                 .authorizeHttpRequests((authorizeRequests) -> {
                     authorizeRequests
                             .requestMatchers(permitList).permitAll()
