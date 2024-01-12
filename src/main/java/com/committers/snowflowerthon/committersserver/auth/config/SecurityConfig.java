@@ -43,10 +43,7 @@ public class SecurityConfig {
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(formLogin -> formLogin
-                        .loginPage("/api/auth/redirect") // 원하는 로그인 페이지로 설정
-                        .permitAll()
-                )
+                .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeRequests) -> {
                     authorizeRequests
                             .requestMatchers(permitList).permitAll()
@@ -67,7 +64,7 @@ public class SecurityConfig {
 //
 //                        ) // 커스텀 로그인 페이지가 필요하지 않으므로, 로그인 시 리다이렉션이 필요없다.
                         .redirectionEndpoint( redirection -> redirection
-                                .baseUri("/api/auth/redirect") // OAuth 2.0 공급자로부터 코드가 리다이렉션될 때의 기본 URI
+                                .baseUri("/login/oauth2/code/github") // OAuth 2.0 공급자로부터 코드가 리다이렉션될 때의 기본 URI
 //
                         ) // 리다이렉션 엔드포인트 설정
                         .successHandler(successHandler) // OAuth 2.0 로그인 성공 시의 핸들러를 설정
