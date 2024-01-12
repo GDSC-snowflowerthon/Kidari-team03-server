@@ -1,9 +1,7 @@
 package com.committers.snowflowerthon.committersserver.domain.member.service;
 
-import com.committers.snowflowerthon.committersserver.auth.config.AuthenticationUtils;
+import com.committers.snowflowerthon.committersserver.auth.config.CustomAuthenticationToken;
 import com.committers.snowflowerthon.committersserver.auth.github.GitHubService;
-import com.committers.snowflowerthon.committersserver.common.response.exception.CommitException;
-import com.committers.snowflowerthon.committersserver.common.response.exception.ErrorCode;
 import com.committers.snowflowerthon.committersserver.common.validation.ValidationService;
 import com.committers.snowflowerthon.committersserver.domain.commit.entity.Commit;
 import com.committers.snowflowerthon.committersserver.domain.commit.entity.CommitRepository;
@@ -17,6 +15,8 @@ import com.committers.snowflowerthon.committersserver.domain.univ.entity.Univ;
 import com.committers.snowflowerthon.committersserver.domain.univ.entity.UnivRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +26,7 @@ import static org.apache.commons.lang3.math.NumberUtils.max;
 @RequiredArgsConstructor
 @Service
 public class MemberService {
-    private final AuthenticationUtils authenticationUtils;
+//    private final AuthenticationUtils authenticationUtils;
     private final ValidationService validationService;
     private final MemberRepository memberRepository;
     private final CommitRepository commitRepository;
@@ -36,7 +36,11 @@ public class MemberService {
 
     // 사용자 Member 받아오기
     public Member getAuthMember() {
-        Long memberId = authenticationUtils.getMemberId();
+
+        // 현재 사용자의 Authentication 객체 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Long memberId = Long.valueOf(((CustomAuthenticationToken) authentication).getMemberId());
         Member member = validationService.valMember(memberId);
         return member;
     }
