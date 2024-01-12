@@ -1,7 +1,11 @@
 package com.committers.snowflowerthon.committersserver.domain.ranking.controller;
 
+import com.committers.snowflowerthon.committersserver.common.response.ApiResponse;
 import com.committers.snowflowerthon.committersserver.domain.ranking.dto.MyRankDto;
+import com.committers.snowflowerthon.committersserver.domain.ranking.dto.MyUnivRankDto;
 import com.committers.snowflowerthon.committersserver.domain.ranking.dto.RankDto;
+import com.committers.snowflowerthon.committersserver.domain.ranking.dto.RankingBuddyDto;
+import com.committers.snowflowerthon.committersserver.domain.ranking.dto.RankingUnivDto;
 import com.committers.snowflowerthon.committersserver.domain.ranking.service.RankingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,27 +23,27 @@ public class RankingController {
     private final RankingService rankingService;
 
     @GetMapping("/buddy/own")
-    public ResponseEntity<MyRankDto> rankingBuddyOwn(){
+    public ResponseEntity<?> rankingBuddyOwn(){
         MyRankDto myRankDto = rankingService.getMyRank();
-        return ResponseEntity.ok(myRankDto);
+        return ResponseEntity.ok().body(ApiResponse.success(myRankDto));
     }
 
     @GetMapping("/buddy/list")
-    public ResponseEntity<List<RankDto>> rankingBuddyList() {
-        List<RankDto> rankDto = rankingService.getBuddyRanking();
-        return ResponseEntity.ok(rankDto);
+    public ResponseEntity<?> rankingBuddyList() {
+        List<RankingBuddyDto> rankingList = rankingService.getBuddyRanking();
+        return ResponseEntity.ok().body(ApiResponse.success(rankingList));
     }
 
     @GetMapping("/univ/own")
-    public ResponseEntity<MyRankDto> rankingUnivOwn(){
-        MyRankDto myUnivRankDto = rankingService.getMyUnivRank();
-        return ResponseEntity.ok(myUnivRankDto);
+    public ResponseEntity<?> rankingUnivOwn(){
+        MyUnivRankDto myUnivRankDto = rankingService.getMyUnivRank();
+        return ResponseEntity.ok().body(ApiResponse.success(myUnivRankDto));
     }
 
     @GetMapping("/univ/list")
-    public ResponseEntity<List<RankDto>> rankingUnivList() {
-        List<RankDto> rankingUnivDto = rankingService.getUnivRanking();
-        return ResponseEntity.ok(rankingUnivDto);
+    public ResponseEntity<?> rankingUnivList() {
+        List<RankingUnivDto> rankingList = rankingService.getUnivRanking();
+        return ResponseEntity.ok().body(ApiResponse.success(rankingList));
     }
 
 }
