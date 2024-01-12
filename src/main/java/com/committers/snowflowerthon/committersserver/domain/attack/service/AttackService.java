@@ -8,6 +8,7 @@ import com.committers.snowflowerthon.committersserver.domain.member.entity.Membe
 import com.committers.snowflowerthon.committersserver.domain.member.entity.MemberRepository;
 import com.committers.snowflowerthon.committersserver.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AttackService {
@@ -81,11 +83,8 @@ public class AttackService {
                 .isChecked(false)
                 .member(attackedMember)
                 .build();
-        Long snowmanHeight = attackedMember.getSnowmanHeight(); // 공격받은 사람의 눈사람
-        if (snowmanHeight > 1) {
-            attackedMember.updateSnowmanHeight(snowmanHeight - 1); // 공격받은 사람의 눈사람 키를 줄임
-        }
-        memberRepository.save(attackedMember);
+        attackedMember = memberService.refreshHeight(attackedMember, -1L, attackedMember.getSnowmanHeight() - 1); // 공격받은 사람의 눈사람 키를 줄임
+        log.info("memberService 반환값 -> {}", attackedMember);
         attackRepository.save(newAttack);
     }
 }

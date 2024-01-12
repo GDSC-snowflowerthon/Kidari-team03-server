@@ -47,8 +47,8 @@ public class MemberService {
         if (!member.useSnowflake()){ // 눈송이를 사용에 실패한 경우 false 반환
             return false;
         }
-        member.updateSnowmanHeight(member.getSnowmanHeight() + 1); // 사용자의 snowmanHeight 1 증가
-        memberRepository.save(member);
+        member = refreshHeight(member, 1L, member.getSnowmanHeight() + 1);
+        log.info("memberService 반환값 -> {}", member);
         return true;
     }
 
@@ -82,15 +82,16 @@ public class MemberService {
         return newMemberInfo;
     }
 
-    // 단일 멤버의 눈사람 키 갱신 (멤버와 Univ의 totalHeight)
-    public Member refreshHeight(Member member, Long decre, Long newHeight) {
+    // 단일 멤버의 눈사람 키 갱신 (멤버와 Univ의 totalHeight), diff는 양수(키우기) 또는 음수(공격받음)
+    public Member refreshHeight(Member member, Long diff, Long newHeight) {
 
         log.info("MemberService.refreshHeight");
-        log.info("decre -> {}", decre);
+        log.info("decre -> {}", diff);
         log.info("newHeight -> {}", newHeight);
 
         // 멤버의 눈사람 키 갱신
         member.updateSnowmanHeight(newHeight);
+        memberRepository.save(member);
         log.info("갱신된 멤버의 snowHeight -> {}", member.getSnowmanHeight());
 
         // Univ의 totalHeight 갱신
@@ -98,7 +99,7 @@ public class MemberService {
         log.info("대학명: " + univ.getUnivName());
         log.info("기존 totalHeight -> {}", univ.getTotalHeight());
 
-        univ.updateTotalHeight(decre);
+        univ.updateTotalHeight(diff);
         univRepository.save(univ);
         log.info("갱신된 totalHeight -> {}", univ.getTotalHeight());
 
@@ -156,7 +157,7 @@ public class MemberService {
         log.info("갱신된 멤버 객체의 눈송이 수 -> {}", memberRepository.findById(member.getId()));
 
         // 현재 눈사람 키로 멤버 객체 갱신
-        member = refreshHeight(member, decre, newHeight);
+        member = refreshHeight(member, (-1)*decre, newHeight);
 
         return newSnowflake;
     }

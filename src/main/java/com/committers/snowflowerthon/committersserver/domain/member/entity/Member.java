@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import com.committers.snowflowerthon.committersserver.domain.item.entity.Item;
 
+import static java.lang.Math.max;
+
 @Getter
 @Builder
 @EqualsAndHashCode
@@ -68,7 +70,7 @@ public class Member {
     }
 
     public void updateSnowmanHeight(Long newHeight) {
-        this.snowmanHeight = newHeight;
+        this.snowmanHeight = max(newHeight, 1L);
     }
 
     public void alarmUnchecked(){
