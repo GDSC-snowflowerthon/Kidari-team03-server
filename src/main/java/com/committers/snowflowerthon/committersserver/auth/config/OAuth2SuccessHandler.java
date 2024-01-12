@@ -65,10 +65,28 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         }
 
         // Auth 컨트롤러로 리다이렉트
-        String redirectUrl = UriComponentsBuilder.fromUriString("/api/auth/redirect")
-                .queryParam("accessToken", token.getAccessToken())
-                .queryParam("refreshToken", token.getRefreshToken())
-                .toUriString();
-        getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+        // 를 하지마
+//        String redirectUrl = UriComponentsBuilder.fromUriString("/api/auth/redirect")
+//                .queryParam("accessToken", token.getAccessToken())
+//                .queryParam("refreshToken", token.getRefreshToken())
+//                .toUriString();
+
+
+//        getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+
+
+        String redirectUrl = "https://kidari.site/redirect";
+
+        log.info("redirectUrl -> {}", redirectUrl);
+        log.info("accessToken -> {}", token.getAccessToken());
+        log.info("refreshToken -> {}", token.getRefreshToken());
+
+        response = authService.login(response, token.getAccessToken(), token.getRefreshToken());
+
+        // 별다른 대조 없이, 기등록된 닉네임이면 로그인 성공
+        response.sendRedirect(redirectUrl);
+
+        log.info("response -> {}", response.getHeader("Set-Cookie"));
+        log.info("response -> {}", response.getHeaderNames());
     }
 }
