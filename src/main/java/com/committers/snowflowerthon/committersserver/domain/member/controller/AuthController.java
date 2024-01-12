@@ -18,7 +18,7 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @GetMapping("/api/auth/redirect") // 인증 성공 시 리다이렉트 경로
+    @GetMapping("/login/oauth2/code/github") // 인증 성공 시 리다이렉트 경로
     public void login(HttpServletRequest request, HttpServletResponse response,
                                          @RequestParam("accessToken") String accessToken,
                                          @RequestParam("refreshToken") String refreshToken) throws IOException {
