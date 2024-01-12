@@ -34,31 +34,32 @@ public class MemberService {
     private final GitHubService gitHubService;
 
 
-    private static CustomAuthenticationToken getCustomAuthenticationToken(Authentication authentication) {
-//        return (CustomAuthenticationToken) authentication.getPrincipal();
-        Object principal = authentication.getPrincipal();
-
-        if (principal instanceof CustomAuthenticationToken) {
-            return (CustomAuthenticationToken) principal;
-        } else {
-            // 처리할 로직이나 예외를 처리하는 코드를 추가할 수 있습니다.
-            throw new IllegalStateException("Unexpected principal type: " + principal.getClass());
-        }
-    }
+//    private static CustomAuthenticationToken getCustomAuthenticationToken(Authentication authentication) {
+////        return (CustomAuthenticationToken) authentication.getPrincipal();
+//        Object principal = authentication.getPrincipal();
+//
+//        if (principal instanceof CustomAuthenticationToken) {
+//            return (CustomAuthenticationToken) principal;
+//        } else {
+//            // 처리할 로직이나 예외를 처리하는 코드를 추가할 수 있습니다.
+//            throw new IllegalStateException("Unexpected principal type: " + principal.getClass());
+//        }
+//    }
 
     // 사용자 Member 받아오기
     public Member getAuthMember() {
 
-        // 현재 사용자의 Authentication 객체 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        CustomAuthenticationToken c = getCustomAuthenticationToken(authentication);
-        log.info("authentication 객체 맞아? -> {}", String.valueOf(authentication.getPrincipal().getClass().equals(Long.class)));
-
-
-
-        Member member = (Member) c.getPrincipal();
+//        // 현재 사용자의 Authentication 객체 가져오기
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        CustomAuthenticationToken c = getCustomAuthenticationToken(authentication);
+//        log.info("authentication 객체 맞아? -> {}", String.valueOf(authentication.getPrincipal().getClass().equals(Long.class)));
+//
+//
+//
+//        Member member = (Member) c.getPrincipal();
 //        Member member = validationService.valMember(memberId);
+        Member member = memberRepository.findById(1L).get();
         return member;
     }
 
