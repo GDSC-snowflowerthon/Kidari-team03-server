@@ -116,7 +116,11 @@ public class MemberService {
         Long newHeight = member.getSnowmanHeight();
 
         // 현재 Commit 객체에 저장되어 있는 커밋 수 조회
-        Commit commit = commitRepository.findByMember(member).orElseThrow(() -> new CommitException(ErrorCode.COMMIT_NOT_FOUND));
+        Commit commit = commitRepository.findByMember(member).get();
+        if (commit == null) {
+            log.info("commit 객체가 null 입니다.");
+            return  100000L;
+        }
         Long preCommits = commit.getCount();
         log.info("resetSnowflake에서 조회한 현재 커밋 수 -> {}", preCommits);
 

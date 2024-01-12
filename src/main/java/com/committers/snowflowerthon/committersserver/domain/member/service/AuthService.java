@@ -112,6 +112,16 @@ public class AuthService {
         log.info("member -> {}", member.getNickname());
 
         memberRepository.save(member);
+        log.info("member id -> {}", member.getId());
+        log.info("member nickname -> {}", member.getNickname());
+        log.info("member snowflake -> {}", member.getSnowflake());
+        log.info("member snowmanHeight-> {}", member.getSnowmanHeight());
+        log.info("member attacking -> {}", member.getAttacking());
+        log.info("member demage -> {}", member.getDamage());
+        log.info("member role -> {}", member.getRole().getTitle());
+        log.info("member new alarm -> {}", member.getNewAlarm());
+        log.info("member univ -> {}", member.getUniv().getUnivName());
+        log.info("member item -> {}", member.getItem().getId());
 
         // 눈송이 수 업데이트
         commitService.setSnowflake(memberDto);
