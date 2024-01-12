@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "https://kidari.site", allowedHeaders = "*")
+@CrossOrigin(origins = {"https://kidari.site", "https://www.kidari.site"}, allowedHeaders = "*")
 @RequestMapping("/api/v1")
 public class UnivController {
 
