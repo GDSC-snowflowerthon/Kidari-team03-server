@@ -9,9 +9,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -41,9 +46,24 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    CorsConfigurationSource corsConfigurationSource() {
+        return request -> {
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowedHeaders(Collections.singletonList("*"));
+            config.setAllowedMethods(Collections.singletonList("*"));
+            config.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000"));
+            config.setAllowedOriginPatterns(Collections.singletonList("https://kidari.site"));
+            config.setAllowedOriginPatterns(Collections.singletonList("https://kidari.site:3000"));
+            config.setAllowCredentials(true);
+            return config;
+        };
+    }
+
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .httpBasic(HttpBasicConfigurer::disable)
+                .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeRequests) -> {
@@ -56,7 +76,7 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtExceptionFilter(), JwtFilter.class) // JwtExceptionFilter를 JwtFilter 앞에 추가
 
                 .logout(log -> log
-                        .logoutUrl("/api/logout")
+                        .logoutUrl("/logout")
                         .logoutSuccessHandler(new CustomLogoutSuccessHandler())
                 )
                 // OAuth 2.0 로그인 설정 시작
@@ -77,11 +97,11 @@ public class SecurityConfig {
         return http.build();
     }
 
-    public class CorsConfigurer extends AbstractHttpConfigurer<CorsConfigurer, HttpSecurity> {
-        @Override
-        public void configure(HttpSecurity http) throws Exception {
-            http
-                    .addFilter(corsConfig.corsFilter());
-        }
-    }
+//    public class CorsConfigurer extends AbstractHttpConfigurer<CorsConfigurer, HttpSecurity> {
+//        @Override
+//        public void configure(HttpSecurity http) throws Exception {
+//            http
+//                    .addFilter(corsConfig.corsFilter());
+//        }
+//    }
 }
