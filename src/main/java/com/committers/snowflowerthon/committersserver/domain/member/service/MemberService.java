@@ -26,7 +26,6 @@ import static org.apache.commons.lang3.math.NumberUtils.max;
 @RequiredArgsConstructor
 @Service
 public class MemberService {
-//    private final AuthenticationUtils authenticationUtils;
     private final ValidationService validationService;
     private final MemberRepository memberRepository;
     private final CommitRepository commitRepository;
@@ -34,17 +33,31 @@ public class MemberService {
     private final FollowService followService;
     private final GitHubService gitHubService;
 
+
+    private static CustomAuthenticationToken getCustomAuthenticationToken(Authentication authentication) {
+//        return (CustomAuthenticationToken) authentication.getPrincipal();
+        Object principal = authentication.getPrincipal();
+
+        if (principal instanceof CustomAuthenticationToken) {
+            return (CustomAuthenticationToken) principal;
+        } else {
+            // 처리할 로직이나 예외를 처리하는 코드를 추가할 수 있습니다.
+            throw new IllegalStateException("Unexpected principal type: " + principal.getClass());
+        }
+    }
+
     // 사용자 Member 받아오기
     public Member getAuthMember() {
 
         // 현재 사용자의 Authentication 객체 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        log.info("authentication 객체 맞아? -> {}", String.valueOf(authentication.getPrincipal().getClass().equals(String.class)));
+        CustomAuthenticationToken c = getCustomAuthenticationToken(authentication);
+        log.info("authentication 객체 맞아? -> {}", String.valueOf(authentication.getPrincipal().getClass().equals(Long.class)));
 
 
 
-        Long memberId = Long.valueOf(authentication.getPrincipal().toString());
+        Long memberId = c.getMemberId();
         Member member = validationService.valMember(memberId);
         return member;
     }
