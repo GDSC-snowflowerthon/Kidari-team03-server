@@ -1,6 +1,8 @@
 package com.committers.snowflowerthon.committersserver.common.validation;
 
 import com.committers.snowflowerthon.committersserver.common.response.exception.*;
+import com.committers.snowflowerthon.committersserver.domain.item.entity.Item;
+import com.committers.snowflowerthon.committersserver.domain.item.entity.ItemRepository;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.MemberRepository;
 import com.committers.snowflowerthon.committersserver.domain.univ.entity.Univ;
@@ -8,13 +10,12 @@ import com.committers.snowflowerthon.committersserver.domain.univ.entity.UnivRep
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Service
 public class ValidationService {
 
     private final MemberRepository memberRepository;
+    private final ItemRepository itemRepository;
     private final UnivRepository univRepository;
 
     public Member valMember(String nickname) {
@@ -34,6 +35,11 @@ public class ValidationService {
         }
         return memberList;
     }*/
+
+    public Item valItem(Long itemId) {
+        return itemRepository.findById(itemId)
+                .orElseThrow(() -> new ItemException(ErrorCode.ITEM_NOT_FOUND));
+    }
 
     public Univ valUniv(Long univId) {
         return univRepository.findById(univId)
