@@ -1,6 +1,5 @@
 package com.committers.snowflowerthon.committersserver.domain.follow.service;
 
-import com.committers.snowflowerthon.committersserver.auth.config.AuthenticationUtils;
 import com.committers.snowflowerthon.committersserver.common.validation.ValidationService;
 import com.committers.snowflowerthon.committersserver.domain.follow.dto.FollowPatchedDto;
 import com.committers.snowflowerthon.committersserver.domain.follow.entity.Follow;
@@ -20,7 +19,7 @@ public class FollowService {
 
     // Follow 생성
     public Follow createFollow(Member buddy){
-        Long memberId = AuthenticationUtils.getMemberId();
+        Long memberId = 1L;
         Member member = validationService.valMember(memberId);
         return Follow.builder()
                 .buddyId(buddy.getId())
@@ -45,7 +44,7 @@ public class FollowService {
 
     // 1:1 연결된 Follow 관계를 받아옴
     public Follow getFollowRelation(Member buddy){ // 반환값이 NULL일 수 있음
-        Long memberId = AuthenticationUtils.getMemberId();
+        Long memberId = 1L;
         Member member = validationService.valMember(memberId);
         return followRepository.findByMemberAndBuddyId(member, buddy.getId())
                 .orElse(null);
@@ -62,7 +61,7 @@ public class FollowService {
 
     // 내가 Follow하고 있는 사용자들 불러옴
     public List<Member> getBuddyList() {
-        Long memberId = AuthenticationUtils.getMemberId();
+        Long memberId = 1L;
         Member member = validationService.valMember(memberId);
         List<Follow> followList = followRepository.findAllByMember(member);
         if (followList == null || followList.isEmpty()) { // 팔로우 중인 사람이 없음

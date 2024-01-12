@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AuthenticationUtils {
-
+/*
     public static String getNickname() {
 
         Authentication authentication = getAuthentication();
@@ -57,4 +57,6 @@ public class AuthenticationUtils {
             throw new IllegalStateException("Unexpected principal type: " + principal.getClass());
         }
     }
+
+ */
 }
