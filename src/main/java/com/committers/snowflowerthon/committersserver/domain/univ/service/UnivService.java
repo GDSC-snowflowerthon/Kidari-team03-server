@@ -26,6 +26,7 @@ public class UnivService {
     private final UnivApiService univApiService;
     private final UnivRepository univRepository;
 
+    // 새로운 대학교 생성
     public void createUniv(String univName){
         Univ univ = Univ.builder()
                 .univName(univName)
@@ -35,6 +36,7 @@ public class UnivService {
         univRepository.save(univ);
     }
 
+    // 대학교 이름으로 검색
     public UnivSearchDto searchUnivName(String name) {
         String univApiName = univApiService.searchUnivName(name);
         Univ univ = validationService.valUniv(univApiName);
@@ -55,6 +57,7 @@ public class UnivService {
         }
     }
 
+    // 현재 해당 대학교에 등록중인지 확인
     public Boolean registrationStatus(Univ univ){ //true or false
         Member member = memberService.getAuthMember();
         if (member.getUniv() == univ) {
@@ -108,11 +111,11 @@ public class UnivService {
     // validationService에서 대학교 찾아서
     // 등록 학생수 +1, 높이 합하고, 사용자의
 
-    // 랭킹에서 리스트 반환
+    // 대학교 랭킹을 위해 대학 목록 불러옴
     public List<Univ> getAllUnivList() {
         List<Univ> univList = univRepository.findAll();
         if (univList == null || univList.isEmpty()) {
-            throw new UnivException(ErrorCode.UNIV_NOT_FOUND); // 대학교 찾아지지 않음 -> 더미 대학교 넣어둬야?
+            return null;
         }
         univList.sort(Comparator.comparing(Univ::getTotalHeight).reversed());
         return univList;

@@ -8,5 +8,4 @@ import java.util.Optional;
 public interface UnivRepository extends JpaRepository<Univ, Long> {
     Optional<Univ> findById(Long id);
     Optional<Univ> findByUnivName(String name);
-    List<Univ> findAllByUnivName(Univ univ);
 }
