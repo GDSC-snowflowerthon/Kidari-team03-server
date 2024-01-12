@@ -27,7 +27,7 @@ public class AttackController {
     @PatchMapping("/user/attack")
     public ResponseEntity<?> attackUser(@RequestParam String nickname) {
         if (attackService.tryAttack(nickname)) {
-            return ResponseEntity.ok(HttpStatus.CREATED);
+            return ResponseEntity.ok().body(ApiResponse.success()); // 공격 성공
         }
         return ResponseEntity.badRequest().body(ApiResponse.failure(ErrorCode.SNOWFLAKE_CANNOT_BE_USED)); // 눈송이를 사용할 수 없는 경우
     }

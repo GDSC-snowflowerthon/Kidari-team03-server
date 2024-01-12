@@ -20,9 +20,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AttackService {
     private final ValidationService validationService;
-    private final MemberService memberService;
-    private final MemberRepository memberRepository;
     private final AttackRepository attackRepository;
+    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     // AttackController의 getAlarms 관련
 
