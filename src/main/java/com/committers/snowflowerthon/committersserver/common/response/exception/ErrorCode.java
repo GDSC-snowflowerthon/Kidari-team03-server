@@ -38,6 +38,8 @@ public enum ErrorCode {
     // Univ
     UNIV_NOT_FOUND(404, "존재하지 않는 대학입니다."),
 
+    // Snowflake를 사용할 수 없음
+    SNOWFLAKE_CANNOT_BE_USED(404, "현재 보유 중인 눈송이가 없습니다.")
     ;
 
     private final int statusCode;
