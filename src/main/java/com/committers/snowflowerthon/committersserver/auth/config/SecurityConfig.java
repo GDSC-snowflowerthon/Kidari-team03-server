@@ -25,6 +25,7 @@ public class SecurityConfig {
     private String[] permitList={
             "/login", // 로그인 페이지
             "/login/oauth2/code/github",
+            "/login/oauth2/code",
             "/api/auth/**",
             "/api/auth/login", // 로그인 시 Jwt Filter를 거쳐버림 안 거치게 수정
             "/api/auth/redirect", // 로그인 시 Jwt Filter를 거쳐버림 안 거치게 수정
