@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import com.committers.snowflowerthon.committersserver.domain.item.entity.Item;
 
+import static java.lang.Math.max;
+
 @Getter
 @Builder
 @EqualsAndHashCode
@@ -55,12 +57,6 @@ public class Member {
     @JoinColumn(name = "itemId")
     private Item item; // 아이템 고유 번호
 
-    public void updateSnowflake(Long totalCommits) {
-        this.snowflake = totalCommits;
-    }
-    public void updateSnowmanHeight(Long newHeight) {
-        this.snowmanHeight = newHeight;
-    }
     public boolean useSnowflake(){
         if (this.snowflake <= 0) { // 0 이하이면 사용 불가
             return false;
@@ -69,10 +65,22 @@ public class Member {
         return true;
     }
 
+    public void updateSnowflake(Long totalCommits) {
+        this.snowflake = totalCommits;
+    }
+
+    public void updateSnowmanHeight(Long newHeight) {
+        this.snowmanHeight = max(newHeight, 1L);
+    }
+
     public void alarmUnchecked(){
         this.newAlarm = true;
     }
     public void alarmChecked(){
         this.newAlarm = false;
+    }
+
+    public void updateUniv(Univ univ){
+        this.univ = univ;
     }
 }

@@ -1,12 +1,6 @@
 package com.committers.snowflowerthon.committersserver.domain.univ.service;
 
-import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
 import com.committers.snowflowerthon.committersserver.domain.univ.dto.UnivApiDto;
-import com.committers.snowflowerthon.committersserver.domain.univ.dto.UnivSearchDto;
-import com.committers.snowflowerthon.committersserver.domain.univ.dto.UnivUpdateResDto;
-import com.committers.snowflowerthon.committersserver.domain.univ.entity.Univ;
-import com.committers.snowflowerthon.committersserver.domain.univ.entity.UnivRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MyRankDto {
-    private int myRank;
+public class MyUnivRankDto {
+    private String myUnivName;
+    private int myUnivRanking;
 }

@@ -1,10 +1,15 @@
 package com.committers.snowflowerthon.committersserver.domain.univ.dto;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-public class UnivRegisterResultDto {
+@AllArgsConstructor
+@NoArgsConstructor
+public class UnivRegisterDto {
     private String univName;
     private Boolean isRegistered;
 }
