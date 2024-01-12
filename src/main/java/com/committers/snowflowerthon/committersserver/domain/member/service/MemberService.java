@@ -40,7 +40,11 @@ public class MemberService {
         // 현재 사용자의 Authentication 객체 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        Long memberId = Long.valueOf(((CustomAuthenticationToken) authentication).getMemberId());
+        log.info("authentication 객체 맞아? -> {}", String.valueOf(authentication.getPrincipal().getClass().equals(String.class)));
+
+
+
+        Long memberId = Long.valueOf(authentication.getPrincipal().toString());
         Member member = validationService.valMember(memberId);
         return member;
     }
