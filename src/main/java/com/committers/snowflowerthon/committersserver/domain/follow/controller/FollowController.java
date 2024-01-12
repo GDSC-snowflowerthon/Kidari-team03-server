@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"https://kidari.site", "https://www.kidari.site", "http://localhost:5173"}, allowedHeaders = "*")
+@CrossOrigin(origins = {"*", "https://kidari.site", "https://www.kidari.site", "http://localhost:5173"}, allowedHeaders = "*")
 @RequestMapping("/api/v1")
 public class FollowController {
 

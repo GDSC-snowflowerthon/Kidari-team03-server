@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"https://kidari.site", "https://www.kidari.site", "http://localhost:5173"}, allowedHeaders = "*")
+@CrossOrigin(origins = {"*", "https://kidari.site", "https://www.kidari.site", "http://localhost:5173"}, allowedHeaders = "*")
 @RequestMapping("/api/v1/ranking")
 public class RankingController {
 
