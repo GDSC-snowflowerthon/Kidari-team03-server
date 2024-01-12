@@ -49,12 +49,12 @@ public class Member {
     private Boolean newAlarm = false; // 새로운 알림이 있는지
 
     // 단방향 매핑
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "univId")
     private Univ univ; // 대학 고유 번호
 
     // 단방향 매핑
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "itemId")
     private Item item; // 아이템 고유 번호
 

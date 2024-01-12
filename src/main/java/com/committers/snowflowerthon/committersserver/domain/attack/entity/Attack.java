@@ -31,7 +31,7 @@ public class Attack {
     private Boolean isChecked; // 단일 공격값 조회 여부
 
     // 단방향 매핑
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "memberId")
     private Member member; // 공격 받은 사람 고유 번호
 
