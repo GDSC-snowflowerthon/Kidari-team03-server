@@ -6,7 +6,7 @@ import com.committers.snowflowerthon.committersserver.common.validation.Validati
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.MemberRepository;
 import com.committers.snowflowerthon.committersserver.domain.member.service.MemberService;
-import com.committers.snowflowerthon.committersserver.domain.univ.dto.UnivRegisterResultDto;
+import com.committers.snowflowerthon.committersserver.domain.univ.dto.UnivRegisterDto;
 import com.committers.snowflowerthon.committersserver.domain.univ.dto.UnivSearchDto;
 import com.committers.snowflowerthon.committersserver.domain.univ.entity.Univ;
 import com.committers.snowflowerthon.committersserver.domain.univ.entity.UnivRepository;
@@ -39,6 +39,9 @@ public class UnivService {
     // 대학교 이름으로 검색
     public UnivSearchDto searchUnivName(String name) {
         String univApiName = univApiService.searchUnivName(name);
+        if (univApiName == null) { // 찾은 대학교 이름이 세계 대학 API에 포함되지 않는 경우 새로운 대학교를 생성하지 않음.
+            return null;
+        }
         Univ univ = validationService.valUniv(univApiName);
         if (univ == null){  // 세계 대학 API에 포함되나 생성되지 않았다면 생성
             createUniv(univApiName);
@@ -68,48 +71,40 @@ public class UnivService {
     }
 
 
-    public Boolean registerUniv(String univName, Boolean isRegistered){
-        Univ searchedUniv = validationService.valUniv(univName);
-        if (searchedUniv == null){
+    public UnivRegisterDto registerUniv(String univName, Boolean isRegistered){ //isRegistered는 현재 newUniv의 등록여부임
+        Univ newUniv = validationService.valUniv(univName);
+        if (newUniv == null){
             throw new UnivException(ErrorCode.UNIV_NOT_FOUND);
         }
-        Member member = memberService.getAuthMember();
-        Univ myUniv = member.getUniv();
+        Boolean matchUniv = registrationStatus(newUniv); // 검증: 해당 대학교를 등록 중인지 확인
+        if (matchUniv != isRegistered){
+            throw new UnivException(ErrorCode.UNIV_REGISTER_BAD_REQUEST); // 이 결과는 일치해야 하므로 에러 발생!
+        }
 
-        Boolean status = registrationStatus(searchedUniv);
-        if (status != isRegistered) {
-            throw new UnivException(ErrorCode.UNIV_NOT_FOUND);
+        Member member = memberService.getAuthMember();
+        Univ myUniv = validationService.valUniv(member.getUniv().getId()); // null일 경우 내가 등록중인 대학교가 없음
+        if (myUniv == null && !isRegistered) {
+            // 새 대학교 등록
+
+            member.updateUniv(newUniv);
+            memberRepository.save(member);
         }
-        if (status) {
-            if (isRegistered) {
-                //등록 취소
-                //member.updateUnivId(null);
-                //univ에서 belong 정보 업데이트
-                //totalHeight 정보 업데이트
-                //univRepo에 저장
-                member.updateUniv(null);
-                memberRepository.save(member);
-                return true;
-            } else {
-                return false; // 등록 불가능한 상태
-            }
+        else if (myUniv != null && isRegistered) {
+            //등록 취소
+            //univ에서 belong 정보 업데이트
+            //totalHeight 정보 업데이트
+            //univRepo에 저장
+
+            // validationService에서 대학교 찾아서
+            // 등록 학생수 +1, 높이 합하고, 사용자의
+            member.updateUniv(null);
+            memberRepository.save(member);
         }
         else {
-            if (isRegistered){
-                throw new UnivException(ErrorCode.UNIV_NOT_FOUND); // 추후 에러코드 변경 // 불가능한 상태, 에러
-            } else {
-                //신규 등록
-                //member.updateUnivId(univ);
-                //univ에서 belong 정보 업데이트
-                //totalHeight 정보 업데이트
-                //univRepo에 저장
-                return true;
-            }
+            throw new UnivException(ErrorCode.UNIV_REGISTER_BAD_REQUEST);
         }
+        return new UnivRegisterDto(newUniv.getUnivName(), !isRegistered);
     }
-    // 사용자의 Univ univ와 id가 일치하는지 확인. query 변수로는 univName을 받음.
-    // validationService에서 대학교 찾아서
-    // 등록 학생수 +1, 높이 합하고, 사용자의
 
     // 대학교 랭킹을 위해 대학 목록 불러옴
     public List<Univ> getAllUnivList() {
