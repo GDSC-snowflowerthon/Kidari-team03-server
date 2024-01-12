@@ -1,6 +1,8 @@
 package com.committers.snowflowerthon.committersserver.auth.jwt;
 
 import com.committers.snowflowerthon.committersserver.auth.config.CustomAuthenticationToken;
+import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
+import com.committers.snowflowerthon.committersserver.domain.member.entity.MemberRepository;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Role;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,7 +23,7 @@ import java.util.List;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtils jwtUtils;
-
+    private final MemberRepository memberRepository;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String accessToken = jwtUtils.resolveAccessToken(request);
@@ -36,11 +38,12 @@ public class JwtFilter extends OncePerRequestFilter {
     private void setAuthentication(String accessToken) {
         String nickname = jwtUtils.getNicknameFromToken(accessToken);
         Long memberId = jwtUtils.getMemberIdFromToken(accessToken);
+        Member member = memberRepository.findById(memberId).get();
         Role role = jwtUtils.getRoleFromToken(accessToken);
 
         CustomAuthenticationToken authenticationToken = new CustomAuthenticationToken(
                 nickname,
-                memberId,
+                member,
                 role,
                 "",        // credentials
                 List.of(new SimpleGrantedAuthority(role.toString()))

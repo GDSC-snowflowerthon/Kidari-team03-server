@@ -57,8 +57,8 @@ public class MemberService {
 
 
 
-        Long memberId = c.getMemberId();
-        Member member = validationService.valMember(memberId);
+        Member member = (Member) c.getPrincipal();
+//        Member member = validationService.valMember(memberId);
         return member;
     }
 
