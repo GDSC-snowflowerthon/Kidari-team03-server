@@ -15,7 +15,7 @@ public class CorsConfig {
         CorsConfiguration corsConfig = new CorsConfiguration();
 
         corsConfig.setAllowCredentials(true);
-        corsConfig.setAllowedOrigins(List.of("https://kidari.site", "https://www.kidari.site", "https://kidari-server.shop"));
+        corsConfig.setAllowedOrigins(List.of("https://kidari.site", "https://www.kidari.site", "https://kidari-server.shop", "http://localhost:5173"));
         corsConfig.setAllowedMethods(List.of("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
         corsConfig.setAllowedHeaders(List.of("*"));
         corsConfig.setAllowedHeaders(List.of("*"));
