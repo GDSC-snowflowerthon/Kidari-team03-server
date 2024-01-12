@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberSearchResDto { // 유저 검색 결과에서 사용됨
+public class MemberSearchResDto {
     private String nickname;
     private Long snowmanHeight;
     private boolean isFollowed;

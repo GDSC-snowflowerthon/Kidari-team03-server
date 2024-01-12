@@ -17,5 +17,4 @@ public class MemberReadmeResDto {
     private Long snowId;
     private Long hatId;
     private Long decoId;
-    //dto 추후 작성
 }

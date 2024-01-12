@@ -32,35 +32,39 @@ public class MemberService {
     private final FollowService followService;
     private final GitHubService gitHubService;
 
+    // 사용자 Member 받아오기
     public Member getAuthMember() {
         Long memberId = authenticationUtils.getMemberId();
         Member member = validationService.valMember(memberId);
         return member;
     }
 
+    // 눈사람 키 키우기
     public boolean growSnowman() {
         Member member = getAuthMember();
-        if (!member.useSnowflake()){ // 눈송이를 사용하는 데 실패
+        if (!member.useSnowflake()){ // 눈송이를 사용에 실패한 경우 false 반환
             return false;
         }
-        member.updateSnowmanHeight(member.getSnowmanHeight() + 1); // snowmanHeight이 1 증가
+        member.updateSnowmanHeight(member.getSnowmanHeight() + 1); // 사용자의 snowmanHeight 1 증가
         memberRepository.save(member);
         return true;
     }
 
+    // 유저를 nickname으로 검색, 내가 follow중인 상태인지와 함께 보냄
     public MemberSearchResDto searchMember(String nickname) {
         Member buddy = validationService.valMember(nickname);
         Boolean followStatus = followService.followStatus(buddy);
-        return MemberSearchResDto.toDto(buddy, followStatus); // 팔로우 상태와 함께 보냄
+        return MemberSearchResDto.toDto(buddy, followStatus);
     }
 
+    // 다른 유저 정보 조회
     public MemberOtherResDto getOtherMemberInfo(String nickname){
         Member buddy = validationService.valMember(nickname);
         Boolean followStatus = followService.followStatus(buddy);
         return MemberOtherResDto.toDto(buddy, followStatus); // 팔로우 상태와 함께 보냄
     }
 
-    // 단일 유저 본인 정보 조회
+    // 유저 본인 정보 조회
     public MemberInfoDto getMemberInfo() {
         Member member = getAuthMember();
 
