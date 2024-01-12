@@ -1,5 +1,6 @@
 package com.committers.snowflowerthon.committersserver.auth.config;
 
+import com.committers.snowflowerthon.committersserver.domain.member.entity.Member;
 import com.committers.snowflowerthon.committersserver.domain.member.entity.Role;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,7 +26,7 @@ public class AuthenticationUtils {
         Authentication authentication = getAuthentication();
 
         if (authentication != null) {
-            return Long.valueOf(getCustomAuthenticationToken(authentication).getMemberId());
+            return ((Member) getCustomAuthenticationToken(authentication).getPrincipal()).getId();
         }
         // 커스텀 필요
         throw new UsernameNotFoundException("Member ID not found in the current Authentication context");
