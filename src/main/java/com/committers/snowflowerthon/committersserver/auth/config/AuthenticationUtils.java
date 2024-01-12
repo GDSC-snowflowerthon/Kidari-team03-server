@@ -14,7 +14,7 @@ public class AuthenticationUtils {
         Authentication authentication = getAuthentication();
 
         if (authentication != null) {
-            return getCustomAuthenticationToken(authentication).getName();
+            return String.valueOf(getCustomAuthenticationToken(authentication).getName());
         }
         // 커스텀 필요
         throw new UsernameNotFoundException("Nickname not found in the current Authentication context");
@@ -25,7 +25,7 @@ public class AuthenticationUtils {
         Authentication authentication = getAuthentication();
 
         if (authentication != null) {
-            return getCustomAuthenticationToken(authentication).getMemberId();
+            return Long.valueOf(getCustomAuthenticationToken(authentication).getMemberId());
         }
         // 커스텀 필요
         throw new UsernameNotFoundException("Member ID not found in the current Authentication context");
@@ -35,7 +35,7 @@ public class AuthenticationUtils {
         Authentication authentication = getAuthentication();
 
         if(authentication != null) {
-            return getCustomAuthenticationToken(authentication).getRole();
+            return Role.valueOf(getCustomAuthenticationToken(authentication).getRole().toString());
         }
         // 커스텀 필요
         throw new UsernameNotFoundException("Role not found in the current Authentication context");
