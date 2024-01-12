@@ -17,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Collections;
@@ -80,9 +81,9 @@ public class SecurityConfig {
                     authorizeRequests
                             .requestMatchers(permitList).permitAll()
                             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                            .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                             .anyRequest().hasAnyAuthority("ROLE_MEMBER");
                 })
-
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class) // jwtFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
                 .addFilterBefore(new JwtExceptionFilter(), JwtFilter.class) // JwtExceptionFilter를 JwtFilter 앞에 추가
 
