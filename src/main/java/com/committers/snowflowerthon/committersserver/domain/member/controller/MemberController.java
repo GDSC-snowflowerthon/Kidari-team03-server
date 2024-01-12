@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins = "https://kidari.site")
 @RequestMapping("/api/v1")
 public class MemberController {
 
