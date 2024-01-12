@@ -14,6 +14,6 @@ public enum Role { // 유저 권한(게스트/멤버)
     private final String title;
 
     public static Role getDefaultRole() {
-        return ROLE_GUEST; // 기본값은 ROLE_GUEST로 설정
+        return ROLE_MEMBER; // 기본값은 ROLE_GUEST로 설정
     }
 }

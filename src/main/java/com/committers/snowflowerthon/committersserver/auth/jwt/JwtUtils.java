@@ -33,7 +33,7 @@ public class JwtUtils {
         Claims claims = Jwts.claims();
         claims.put("nickname", member.getNickname());
         claims.put("memberId", member.getId());
-        claims.put("role", member.getRole());
+        claims.put("role", member.getRole().getRole());
         long validTime = accessTokenTime;
         Date now = new Date();
         return Jwts.builder()
@@ -110,7 +110,7 @@ public class JwtUtils {
     }
 
     public String getNicknameFromToken(String token) {
-        return (String) getClaims(token).get("nickname");
+        return String.valueOf(getClaims(token).get("nickname"));
     }
 
     public Long getMemberIdFromToken(String token) {
@@ -118,8 +118,16 @@ public class JwtUtils {
     }
 
     public Role getRoleFromToken(String token) {
-        return Role.valueOf(getClaims(token).get("role").toString());
+        return Role.ROLE_MEMBER;
+//        return Role.valueOf(getClaims(token).get("role").toString());
     }
+
+//    public Role getRoleFromToken(String token) {
+//        Object roleValue = getClaims(token).get("role");
+//        return roleValue != null ? Role.valueOf(roleValue.toString()) : null;
+//    }
+
+
 
     public Claims getClaims(String token) {
         return Jwts.parser().setSigningKey(jwtSecretKey).parseClaimsJws(token).getBody();
